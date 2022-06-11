@@ -303,7 +303,7 @@
 	<div class="container container-xl-custom">
 		<div class="row justify-content-center">
 			<div class="col-lg-9 col-xl-6 text-center">
-					<img src="<?php echo base_url('public/uploads/why_choose.webp'); ?>" >
+				<img src="<?php echo base_url('public/uploads/why_choose.webp'); ?>" >
 			</div>
 			<div class="col-lg-9 col-xl-6">
 				<div class="overflow-hidden mb-3">
