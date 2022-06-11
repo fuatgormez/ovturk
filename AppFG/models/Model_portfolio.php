@@ -23,6 +23,11 @@ class Model_portfolio extends CI_Model
         $query = $this->db->query($sql,array($id));
         return $query->first_row('array');
     }
+    public function get_portfolio_all_photo()
+    {
+        $query = $this->db->query("SELECT * from tbl_portfolio_photo");
+        return $query->result_array();
+    }
     public function get_portfolio_photo($id)
     {
         $query = $this->db->query("SELECT * from tbl_portfolio_photo WHERE portfolio_id=?",array($id));

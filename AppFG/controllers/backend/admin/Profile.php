@@ -90,11 +90,11 @@ class Profile extends CI_Controller
 		    }
 		    if($valid == 1) {
 		    	// removing the existing photo
-		    	unlink('./public/uploads/'.$this->session->userdata('photo'));
+		    	unlink('./public/uploads/user/'.$this->session->userdata('photo'));
 
 		    	// updating the data
 		    	$final_name = 'user-'.'.'.$ext;
-		        move_uploaded_file( $path_tmp, './public/uploads/'.$final_name );
+		        move_uploaded_file( $path_tmp, './public/uploads/user/'.$final_name );
 		    			        
 				$form_data = array(
 					'photo' => $final_name

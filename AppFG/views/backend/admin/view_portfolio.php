@@ -10,23 +10,16 @@
 <section class="content">
 	<div class="row">
 		<div class="col-md-12">
-
-			<?php
-	        if($this->session->flashdata('error')) {
-	            ?>
+			<?php if($this->session->flashdata('error')) : ?>
 	            <div class="callout callout-danger">
 	                <p><?php echo $this->session->flashdata('error'); ?></p>
 	            </div>
-	            <?php
-	        }
-	        if($this->session->flashdata('success')) {
-	            ?>
+	        <?php endif; ?>
+	        <?php if($this->session->flashdata('success')) : ?>
 	            <div class="callout callout-success">
 	                <p><?php echo $this->session->flashdata('success'); ?></p>
 	            </div>
-	            <?php
-	        }
-	        ?>
+	        <?php endif; ?>
 
 			<div class="box box-info">
 				<div class="box-body table-responsive">
@@ -50,7 +43,7 @@
 									<td style="width:100px;"><?php echo $i; ?></td>
 									<td><?php echo $row['name']; ?></td>
 									<td><?php echo $row['category_name']; ?></td>
-									<td style="width:250px;"><img src="<?php echo base_url(); ?>public/uploads/<?php echo $row['photo']; ?>" alt="<?php echo $row['name']; ?>" style="width:150px;"></td>
+									<td style="width:250px;"><img src="<?php echo base_url(); ?>public/uploads/portfolio_photos/<?php echo $row['photo']; ?>" alt="<?php echo $row['name']; ?>" style="width:150px;"></td>
 									<td>
 										<a class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal<?php echo $i; ?>">Details</a>						
 										<a href="<?php echo base_url(); ?>backend/admin/portfolio/edit/<?php echo $row['id']; ?>" class="btn btn-primary btn-xs">Edit</a>

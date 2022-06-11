@@ -10,6 +10,7 @@ class Photo_gallery extends CI_Controller {
         $this->load->model('Model_photo_gallery');
         //$this->load->model('Model_portfolio');
         $this->load->model('Model_service');
+        $this->load->model('shop/Model_shopping_cart');
 
         $this->load->library('cart');
         $this->lang->load('file', $this->session->userdata('site_language') ?? $this->session->userdata('store_language'));
@@ -23,7 +24,7 @@ class Photo_gallery extends CI_Controller {
         $data['page_home'] = $this->Model_common->all_page_home();
 		$data['page_photo_gallery'] = $this->Model_common->all_page_photo_gallery();
 		//$data['comment'] = $this->Model_common->all_comment();
-		$data['social'] = $this->Model_common->all_social();
+		$data['socials'] = $this->Model_common->all_social();
 		//$data['all_news'] = $this->Model_common->all_news();
         $data['services'] = $this->Model_service->all_service();
         $data['page_contact'] = $this->Model_common->all_page_contact();
@@ -32,6 +33,14 @@ class Photo_gallery extends CI_Controller {
 
         $data['stores'] = $this->Model_common->get_all_store();
         $data['store_langs'] = $this->Model_common->get_all_store_value();
+
+        $land_id = empty($this->session->userdata('land_id')) ? redirect(base_url('select_land')) : $this->session->userdata('land_id') ;
+        $store_id = empty($this->session->userdata('store_id')) ? redirect(base_url('select_land')) : $this->session->userdata('store_id') ;
+        $store_lang_data = empty($this->session->userdata('store_language')) ? redirect(base_url('select_land')) : $this->session->userdata('store_language') ;
+        
+        $data['products'] = $this->Model_shopping_cart->all_product($store_lang_data, $land_id);
+        $data['product_categories'] = $this->Model_shopping_cart->all_product_category($store_lang_data);
+        $data['product_category_photo'] = $this->Model_shopping_cart->all_product_category_photo();
 
         $data['theme'] = $data['setting']['layout'];
 
@@ -44,4 +53,48 @@ class Photo_gallery extends CI_Controller {
         }
 		$this->load->view('layout/'.$data['setting']['layout'].'/view_footer',$data);
 	}
+
+    public function gallery($param)
+    {
+        $data['setting'] = $this->Model_common->all_setting();
+        $data['page_home'] = $this->Model_common->all_page_home();
+		$data['page_photo_gallery'] = $this->Model_common->all_page_photo_gallery();
+		//$data['comment'] = $this->Model_common->all_comment();
+		$data['socials'] = $this->Model_common->all_social();
+		//$data['all_news'] = $this->Model_common->all_news();
+        $data['services'] = $this->Model_service->all_service();
+        $data['page_contact'] = $this->Model_common->all_page_contact();
+
+
+        if($param === 'dugun-fotografciligi') {
+            $data['photo_gallery'] = $this->Model_photo_gallery->photo_tag('wedding');
+        }else if($param === 'urunler') {
+            $data['photo_gallery'] = $this->Model_photo_gallery->photo_tag('products');
+        } else {
+            $data['photo_gallery'] = $this->Model_photo_gallery->all_photo();
+        }
+		
+
+        $data['stores'] = $this->Model_common->get_all_store();
+        $data['store_langs'] = $this->Model_common->get_all_store_value();
+
+        $land_id = empty($this->session->userdata('land_id')) ? redirect(base_url('select_land')) : $this->session->userdata('land_id') ;
+        $store_id = empty($this->session->userdata('store_id')) ? redirect(base_url('select_land')) : $this->session->userdata('store_id') ;
+        $store_lang_data = empty($this->session->userdata('store_language')) ? redirect(base_url('select_land')) : $this->session->userdata('store_language') ;
+        
+        $data['products'] = $this->Model_shopping_cart->all_product($store_lang_data, $land_id);
+        $data['product_categories'] = $this->Model_shopping_cart->all_product_category($store_lang_data);
+        $data['product_category_photo'] = $this->Model_shopping_cart->all_product_category_photo();
+
+        $data['theme'] = $data['setting']['layout'];
+
+        $this->load->view('layout/'.$data['setting']['layout'].'/view_header',$data);
+		if($data['setting']['website_status_frontend'] === 'Active' || in_array($this->session->userdata('role'), ['Superadmin','Admin']))
+        {
+			$this->load->view('layout/'.$data['setting']['layout'].'/view_photo_gallery',$data);
+        } else {
+            $this->load->view('view_maintenance', $data);
+        }
+		$this->load->view('layout/'.$data['setting']['layout'].'/view_footer',$data);
+    }
 }

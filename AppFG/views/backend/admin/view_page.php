@@ -35,14 +35,15 @@
                     <li><a href="#tab_4" data-toggle="tab">FAQ</a></li>
                     <li><a href="#tab_5" data-toggle="tab">Service</a></li>
                     <li><a href="#tab_7" data-toggle="tab">Testimonial</a></li>
-                    <li><a href="#tab_8" data-toggle="tab">News</a></li>
-                    <li><a href="#tab_16" data-toggle="tab">Event</a></li>
+                    <li><a href="#tab_8" data-toggle="tab">News</a></li>                    
                     <li><a href="#tab_9" data-toggle="tab">Contact</a></li>
                     <li><a href="#tab_10" data-toggle="tab">Search</a></li>
                     <li><a href="#tab_11" data-toggle="tab">Terms</a></li>
                     <li><a href="#tab_12" data-toggle="tab">Privacy</a></li>
                     <li><a href="#tab_14" data-toggle="tab">Team</a></li>
                     <li><a href="#tab_15" data-toggle="tab">Portfolio</a></li>
+                    <li><a href="#tab_16" data-toggle="tab">Blog</a></li>
+                    <li><a href="#tab_21" data-toggle="tab">Event</a></li>
                 </ul>
                 <p></p>
                 <ul class="nav nav-tabs">
@@ -1127,7 +1128,7 @@
                         <?php echo form_close(); ?>
                     </div>
 
-                    <div class="tab-pane" id="tab_16">
+                    <div class="tab-pane" id="tab_21">
                         <?php echo form_open(base_url() . 'backend/admin/page/update', array('class' => 'form-horizontal', 'name' => 'form_event')); ?>
                         <div class="form-group">
                             <label for="" class="col-sm-2 control-label">Event Heading </label>
@@ -1397,6 +1398,41 @@
                             <label for="" class="col-sm-2 control-label">Meta Description </label>
                             <div class="col-sm-9">
                                 <textarea class="form-control" name="md_portfolio" style="height:60px;"><?php echo $page_portfolio['md_portfolio']; ?></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="col-sm-2 control-label"></label>
+                            <div class="col-sm-6">
+                                <button type="submit" class="btn btn-success pull-left ajax_request">Update</button>
+                            </div>
+                        </div>
+                        <?php echo form_close(); ?>
+                    </div>
+                    
+                    <div class="tab-pane" id="tab_16">
+                        <?php echo form_open(base_url() . 'backend/admin/page/update', array('class' => 'form-horizontal', 'name' => 'form_blog')); ?>
+                        <div class="form-group">
+                            <label for="" class="col-sm-2 control-label">Blog Heading </label>
+                            <div class="col-sm-6">
+                                <input type="text" name="blog_heading" class="form-control" value="<?php echo $page_blog['blog_heading']; ?>">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="col-sm-2 control-label">Meta Title </label>
+                            <div class="col-sm-9">
+                                <input type="text" name="mt_blog" class="form-control" value="<?php echo $page_blog['mt_blog']; ?>">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="col-sm-2 control-label">Meta Keyword </label>
+                            <div class="col-sm-9">
+                                <textarea class="form-control" name="mk_blog" style="height:60px;"><?php echo $page_blog['mk_blog']; ?></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="col-sm-2 control-label">Meta Description </label>
+                            <div class="col-sm-9">
+                                <textarea class="form-control" name="md_blog" style="height:60px;"><?php echo $page_blog['md_blog']; ?></textarea>
                             </div>
                         </div>
                         <div class="form-group">

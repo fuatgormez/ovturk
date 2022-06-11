@@ -11,23 +11,16 @@
 
 	<div class="row">
 		<div class="col-md-12">
-
-			<?php
-	        if($this->session->flashdata('error')) {
-	            ?>
+			<?php if($this->session->flashdata('error')) : ?>
 	            <div class="callout callout-danger">
 	                <p><?php echo $this->session->flashdata('error'); ?></p>
 	            </div>
-	            <?php
-	        }
-	        if($this->session->flashdata('success')) {
-	            ?>
+	        <?php endif; ?>
+	        <?php if($this->session->flashdata('success')) : ?>
 	            <div class="callout callout-success">
 	                <p><?php echo $this->session->flashdata('success'); ?></p>
 	            </div>
-	            <?php
-	        }
-	        ?>
+	        <?php endif; ?>
 
 			<?php echo form_open_multipart(base_url().'backend/admin/portfolio/edit/'.$portfolio['id'],array('class' => 'form-horizontal')); ?>
 				<div class="box box-info">
@@ -112,7 +105,9 @@
 						<div class="form-group">
 							<label for="" class="col-sm-2 control-label">Existing Featuerd Photo</label>
 							<div class="col-sm-9" style="padding-top:5px">
-								<img src="<?php echo base_url(); ?>public/uploads/<?php echo $portfolio['photo']; ?>" alt="" style="width:120px;">
+								<a href="<?php echo base_url('public/uploads/portfolio_photos/'.$portfolio['photo']); ?>" target="_blank">
+									<img src="<?php echo base_url(); ?>public/uploads/portfolio_photos/<?php echo $portfolio['photo']; ?>" alt="" style="width:120px;">
+								</a>
 							</div>
 						</div>
 						<div class="form-group">
@@ -124,22 +119,23 @@
 						<h3 class="seo-info">Other Photos</h3>
 						<div class="form-group">
 							<label for="" class="col-sm-2 control-label">Existing Other Photos</label>
-							<div class="col-sm-6" style="padding-top:5px">
+							<div class="col-sm-10" style="padding-top:5px">
 								<table class="table table-bordered">
-									<?php
-									foreach ($all_photos_by_id as $row) {
-										?>
+									<?php foreach ($all_photos_by_id as $row): ?>
 										<tr>
 											<td>
-												<img src="<?php echo base_url(); ?>public/uploads/portfolio_photos/<?php echo $row['photo']; ?>" alt="" style="width:120px;">
+												<a href="<?php echo base_url('public/uploads/portfolio_photos/'.$row['photo']); ?>" target="_blank">
+													<img src="<?php echo base_url('public/uploads/portfolio_photos/'.$row['photo']); ?>" alt="" style="width:120px;">
+												</a>
+												
+												<span id="title<?php echo $row['id']; ?>"><?php echo $row['title'];?></span>
 											</td>
 											<td>
-												<a href="<?php echo base_url(); ?>backend/admin/portfolio/single-photo-delete/<?php echo $row['id']; ?>/<?php echo $portfolio['id']; ?>" class="btn btn-danger btn-xs" onClick="return confirm('Are you sure?');">Delete</a>
+												<a href="#" data-id="<?php echo $row['id']; ?>" class="btn btn-warning btn-xl single-photo-edit">Edit</a>
+												<a href="<?php echo base_url(); ?>backend/admin/portfolio/single-photo-delete/<?php echo $row['id']; ?>/<?php echo $portfolio['id']; ?>" class="btn btn-danger btn-xl" onClick="return confirm('Are you sure?');">Delete</a>
 											</td>
 										</tr>
-										<?php
-									}
-									?>
+									<?php endforeach; ?>
 								</table>								
 							</div>
 						</div>
@@ -154,13 +150,13 @@
                                                     <input type="file" name="photos[]">
                                                 </div>
                                             </td>
-                                            <td style="width:28px;"><a href="javascript:void()" class="Delete btn btn-danger btn-xs">X</a></td>
+                                            <td style="width:28px;"><a href="javascript:void()" class="Delete btn btn-danger btn-xl">X</a></td>
                                         </tr>
                                     </tbody>
                                 </table>
 							</div>
 							<div class="col-sm-2" style="padding-top:5px">
-                                <input type="button" id="btnAddNew" value="Add Item" style="margin-bottom:10px;border:0;color: #fff;font-size: 14px;border-radius:3px;" class="btn btn-warning btn-xs">
+                                <input type="button" id="btnAddNew" value="Add Item" style="margin-bottom:10px;border:0;color: #fff;font-size: 14px;border-radius:3px;" class="btn btn-primary btn-xl">
                             </div>
 						</div>
 						<h3 class="seo-info">SEO Information</h3>
@@ -180,6 +176,22 @@
 							<label for="" class="col-sm-2 control-label">Meta Description</label>
 							<div class="col-sm-8">
 								<textarea class="form-control" name="meta_description" style="height:100px;"><?php echo $portfolio['meta_description']; ?></textarea>
+							</div>
+						</div>
+						<!-- Portfolio Tag -->
+						<h3 class="seo-info">Tags</h3>
+						<div class="form-group">
+							<label for="" class="col-sm-2 control-label">Add tag</label>
+							<div class="col-sm-10">
+								<select name="tag[]" class="form-control select2" multiple="multiple">
+									<?php foreach ($tags as $tagKey => $tag) : ?>
+										<?php if(in_array($tag['tag_id'], json_decode($portfolio['tag']))): ?>
+											<option value="<?php echo $tag['tag_id']; ?>" selected><?php echo $tag['name']; ?></option>
+										<?php else: ?>
+											<option value="<?php echo $tag['tag_id']; ?>"><?php echo $tag['name']; ?></option>
+										<?php endif; ?>
+									<?php endforeach; ?>
+								</select>
 							</div>
 						</div>
 						<div class="form-group">
@@ -210,6 +222,24 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 <a class="btn btn-danger btn-ok">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="confirm-single-foto-edit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel"></h4>
+            </div>
+            <div class="modal-body">
+                <label>Title:</label>
+				<input type="text" id="title" class="form-control photo_title" data-id="">
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-block btn-primary btn-ok single-photo-update">Update</a>
             </div>
         </div>
     </div>

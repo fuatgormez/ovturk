@@ -11,22 +11,16 @@
 	<div class="row">
 		<div class="col-md-12">
 
-			<?php
-	        if($this->session->flashdata('error')) {
-	            ?>
+			<?php if($this->session->flashdata('error')) : ?>
 				<div class="callout callout-danger">
 					<p><?php echo $this->session->flashdata('error'); ?></p>
 				</div>
-	            <?php
-	        }
-	        if($this->session->flashdata('success')) {
-	            ?>
+	        <?php endif; ?>
+	        <?php if($this->session->flashdata('success')) : ?>
 				<div class="callout callout-success">
 					<p><?php echo $this->session->flashdata('success'); ?></p>
 				</div>
-	            <?php
-	        }
-	        ?>
+	        <?php endif;?>
 	        
 			<div class="box box-info">
 				<div class="box-body table-responsive">
@@ -50,7 +44,7 @@
 									<td><?php echo $i; ?></td>
 									<td><?php echo $row['name']; ?></td>
 									<td><i class="<?php echo $row['icon']; ?>" style="font-size:30px;"></i></td>
-									<td style="width:200px;"><img src="<?php echo base_url(); ?>public/uploads/<?php echo $row['photo']; ?>" alt="<?php echo $row['name']; ?>" style="width:200px;"></td>									
+									<td style="width:200px;"><img src="<?php echo base_url(); ?>public/uploads/how_we_works/<?php echo $row['photo']; ?>" alt="<?php echo $row['name']; ?>" style="width:32px;"></td>									
 									<td>
 										<a href="<?php echo base_url(); ?>backend/admin/how_we_works/edit/<?php echo $row['id']; ?>" class="btn btn-primary btn-xs">Edit</a>
 										<a href="<?php echo base_url(); ?>backend/admin/how_we_works/delete/<?php echo $row['id']; ?>" class="btn btn-danger btn-xs" onClick="return confirm('Are you sure?');">Delete</a>

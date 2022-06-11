@@ -10,23 +10,17 @@ class Contact extends CI_Controller
 		$this->load->model('Model_contact');
 		$this->load->model('Model_portfolio');
 		$this->load->model('Model_service');
+		$this->load->model('shop/Model_shopping_cart');
 
 		$this->load->library('cart');
+
 		$this->lang->load('file', $this->session->userdata('site_language') ?? $this->session->userdata('store_language'));
 		// $this->output->cache(60);
 		// $store_lang_data = empty($this->session->userdata('store_language')) ? redirect(base_url()) : $this->session->userdata('store_language');
 
 
 		$this->load->library('email');
-		$this->load->library('facebook_pixel');
-
-		if (base_url() === "https://www.irispicture.com/" || base_url() === "https://www.youririsfoto.nl/" || base_url() === "https://www.youririsfoto.com/" || base_url() === "https://www.youririsfoto.be/iptal") {
-            $this->facebook_pixel->Contact(
-            // $pixel_id, $token
-            $this->Model_common->all_setting()['facebook_init'],
-            $this->Model_common->all_setting()['facebook_access_token']
-            );
-        }
+		
 
 		// $config['protocol']  = 'smtp';
         // $config['smtp_host'] = 'ssl://smtp.strato.de';
@@ -35,14 +29,14 @@ class Contact extends CI_Controller
         // $config['smtp_port'] =  465;//587;
         // $config['mailtype']  = 'html';
 
-		$config['protocol']  = 'smtp';
-        $config['smtp_host'] = 'ssl://firewall.irispicture.com';
-        $config['smtp_user'] = 'ip-manager';
-        $config['smtp_pass'] = 'FE4Re&CU__8B)7t@xy-:';
-        $config['smtp_port'] =  465;//587;
-        $config['mailtype']  = 'html';
+		// $config['protocol']  = 'smtp';
+        // $config['smtp_host'] = 'ssl://firewall.irispicture.com';
+        // $config['smtp_user'] = 'ip-manager';
+        // $config['smtp_pass'] = 'FE4Re&CU__8B)7t@xy-:';
+        // $config['smtp_port'] =  465;//587;
+        // $config['mailtype']  = 'html';
                
-		$this->email->initialize($config);
+		// $this->email->initialize($config);
 	}
 
 	public function index()
@@ -50,7 +44,7 @@ class Contact extends CI_Controller
 		$data['setting'] = $this->Model_common->all_setting();
 		$data['page_home'] = $this->Model_common->all_page_home();
 		$data['page_contact'] = $this->Model_common->all_page_contact();
-		$data['social'] = $this->Model_common->all_social();
+		$data['socials'] = $this->Model_common->all_social();
 		$data['all_news'] = $this->Model_common->all_news();
 		$data['services'] = $this->Model_service->all_service();
 		$data['page_contact'] = $this->Model_common->all_page_contact();
@@ -58,6 +52,14 @@ class Contact extends CI_Controller
 
 		$data['stores'] = $this->Model_common->get_all_store();
 		$data['store_langs'] = $this->Model_common->get_all_store_value();
+
+		$land_id = empty($this->session->userdata('land_id')) ? redirect(base_url('select_land')) : $this->session->userdata('land_id') ;
+        $store_id = empty($this->session->userdata('store_id')) ? redirect(base_url('select_land')) : $this->session->userdata('store_id') ;
+        $store_lang_data = empty($this->session->userdata('store_language')) ? redirect(base_url('select_land')) : $this->session->userdata('store_language') ;
+        
+        $data['products'] = $this->Model_shopping_cart->all_product($store_lang_data, $land_id);
+        $data['product_categories'] = $this->Model_shopping_cart->all_product_category($store_lang_data);
+        $data['product_category_photo'] = $this->Model_shopping_cart->all_product_category_photo();
 
 		$data['theme'] = $data['setting']['layout'];
 
@@ -96,12 +98,11 @@ class Contact extends CI_Controller
 			if ($valid == 1) {
 				$msg = '
             		<h3>Sender Information</h3>
-					<b>Name: </b> ' . $_POST['name'] . '<br><br>
-					<b>Phone: </b> ' . $_POST['phone'] . '<br><br>
-					<b>Email: </b> ' . $_POST['email'] . '<br><br>
-					<b>GGF. Order Nummer: </b> ' . $_POST['order_number'] . '<br><br>
-					<b>Subject: </b> ' . $_POST['subject'] . '<br><br>
-					<b>Message: </b> ' . $_POST['message'] . '
+					<b>Ad / Soyad: </b> ' . $this->input->post('name') . '<br><br>
+					<b>Telefon: </b> ' . $this->input->post('phone') . '<br><br>
+					<b>Email: </b> ' . $this->input->post('email') . '<br><br>
+					<b>Konu: </b> ' . $this->input->post('subject') . '<br><br>
+					<b>Mesaj: </b> ' . $this->input->post('message') . '
 				';
 
 
@@ -121,8 +122,8 @@ class Contact extends CI_Controller
 				$this->email->from($data['setting']['send_email_from']);
 				$this->email->to($data['setting']['receive_email_to']);
 				// $this->email->to($_POST['email']);
-				$this->email->reply_to($_POST['email'], $_POST['name']);
-				$this->email->subject('Contact Form Email');
+				$this->email->reply_to($this->input->post('email'), $this->input->post('name'));
+				$this->email->subject('Iletisim Emaili');
 				$this->email->message($msg);
 				$this->email->set_mailtype("html");
 				$this->email->send();
@@ -134,10 +135,10 @@ class Contact extends CI_Controller
 				$this->session->set_flashdata('error', $error);
 			}
 
-			redirect(base_url() . 'contact');
+			redirect(base_url('iletisim'));
 		} else {
 
-			redirect(base_url() . 'contact');
+			redirect(base_url('iletisim'));
 		}
 	}
 }

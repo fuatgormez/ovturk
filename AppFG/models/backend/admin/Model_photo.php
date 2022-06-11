@@ -18,6 +18,12 @@ class Model_photo extends CI_Model
         return $query->result_array();
     }
 
+    function show_by_tag($tag) {
+        $sql = "SELECT * FROM tbl_photo WHERE tag = ? ORDER BY photo_id ASC";
+        $query = $this->db->query($sql,$tag);
+        return $query->result_array();
+    }
+
     function add($data) {
         $this->db->insert('tbl_photo',$data);
         return $this->db->insert_id();

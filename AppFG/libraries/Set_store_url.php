@@ -10,7 +10,7 @@ class Set_store_url
         $this->_CI = &get_instance();
         $this->_CI->load->model('Model_common');
 
-        if (base_url() === 'http://ovturk:8888/' || base_url() === 'https://www.youririsfoto.com/') {
+        if (base_url() === 'http://ovturk:8888/' || base_url() === 'https://www.ovturk.com/') {
 			$check_lang = $this->_CI->Model_common->store_check($this->_CI->session->userdata('store_id') ?: 1);
 			if ($check_lang != NULL) {
 				$array = array(

@@ -83,7 +83,7 @@ class Model_shopping_cart extends CI_Model
     //    }
 
 
-    public function all_product($data = 'de', $land_id = 16) //landid default 16 deutschland
+    public function all_product($data = 'tr', $land_id = 18) //landid default 16 deutschland
     {
         $sql = "SELECT * 
 				FROM tbl_shop_product t1
@@ -141,6 +141,13 @@ class Model_shopping_cart extends CI_Model
         return $query->first_row('array');
     }
 
+    function get_multiple_product_photos($product_id)
+    {
+        $sql = "SELECT * FROM tbl_shop_product_photo WHERE product_id = ?";
+        $query = $this->db->query($sql, array($product_id));
+        return $query->result_array();
+    }
+    
     function get_single_product_photo($product_id)
     {
         $sql = "SELECT * FROM tbl_shop_product_photo WHERE id = ?";

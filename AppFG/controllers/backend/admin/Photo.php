@@ -26,9 +26,13 @@ class Photo extends CI_Controller
 		
     }
 
-	public function index()
+	public function index($tag='')
 	{
-		$data['photo'] = $this->Model_photo->show();
+		if($tag){
+			$data['photo'] = $this->Model_photo->show_by_tag($tag);
+		} else {
+			$data['photo'] = $this->Model_photo->show();
+		}
 
 		$this->load->view('backend/admin/view_header',$data);
 		$this->load->view('backend/admin/view_photo',$data);
@@ -36,6 +40,69 @@ class Photo extends CI_Controller
 	}
 
 	public function add()
+	{
+		$data['setting'] = $this->Model_common->get_setting_data();
+
+		$error = '';
+		$success = '';
+
+	if(isset($_POST['form1'])) {
+		if (isset($_FILES['photos']["name"]) && isset($_FILES['photos']["tmp_name"])) {
+			$photos = array();
+			$photos = $_FILES['photos']["name"];
+			$photos = array_values(array_filter($photos));
+
+			$photos_temp = array();
+			$photos_temp = $_FILES['photos']["tmp_name"];
+			$photos_temp = array_values(array_filter($photos_temp));
+
+			$next_id1 = $this->Model_photo->get_auto_increment_id();
+			foreach ($next_id1 as $row1) {
+				$ai_id = $row1['Auto_increment'];
+			}
+
+			$z = $ai_id;
+			
+			$m = 0;
+			$final_names = array();
+			for ($i = 0; $i < count($photos); $i++) {
+
+				$ext = pathinfo($photos[$i], PATHINFO_EXTENSION);
+				$ext_check = $this->Model_common->extension_check_photo($ext);
+				if ($ext_check == FALSE) {
+					// Nothing to do, just skip
+				} else {
+					$final_names[$m] = $z . '.' . $ext;
+					move_uploaded_file($photos_temp[$i], "./public/uploads/gallery/" . $final_names[$m]);
+					$m++;
+					$z++;
+				}
+			}
+		}
+
+		for ($i = 0; $i < count($final_names); $i++) {
+			$form_data = array(
+				'photo_name' => $final_names[$i],
+				'tag' => $this->input->post('tag'),
+				'favorite' => $this->input->post('favorite')
+			);
+			$this->Model_photo->add($form_data);
+		}
+
+		$success = 'Photo(s) is added successfully!';
+		$this->session->set_flashdata('success',$success);
+		redirect(base_url().'backend/admin/photo');
+
+	} else {            
+		$this->load->view('backend/admin/view_header',$data);
+		$this->load->view('backend/admin/view_photo_add',$data);
+		$this->load->view('backend/admin/view_footer');
+	}
+
+		
+	}
+
+	public function add_orijinal()
 	{
 		$data['setting'] = $this->Model_common->get_setting_data();
 
@@ -70,7 +137,7 @@ class Photo extends CI_Controller
 		        }
 
 		        $final_name = 'photo-'.$ai_id.'.'.$ext;
-		        move_uploaded_file( $path_tmp, './public/uploads/'.$final_name );
+		        move_uploaded_file( $path_tmp, './public/uploads/gallery/'.$final_name );
 
 		        $form_data = array(
 					'photo_name' => $final_name
@@ -139,10 +206,12 @@ class Photo extends CI_Controller
 				unlink('./public/uploads/'.$data['photo']['photo_name']);
 
 				$final_name = 'photo-'.$id.'.'.$ext;
-	        	move_uploaded_file( $path_tmp, './public/uploads/'.$final_name );
+	        	move_uploaded_file( $path_tmp, './public/uploads/gallery/'.$final_name );
 
 	        	$form_data = array(
-					'photo_name' => $final_name
+					'photo_name' => $final_name,
+					'tag' => $this->input->post('tag'),
+					'favorite' => $this->input->post('favorite')
 	            );
 	            $this->Model_photo->update($id,$form_data);
 
@@ -152,8 +221,14 @@ class Photo extends CI_Controller
 		    }
 		    else
 		    {
+				$form_data = array(
+					'tag' => $this->input->post('tag'),
+					'favorite' => $this->input->post('favorite')
+	            );
+	            $this->Model_photo->update($id,$form_data);
+				
 		    	$this->session->set_flashdata('error',$error);
-				redirect(base_url().'backend/admin/photo/edit'.$id);
+				redirect(base_url().'backend/admin/photo/edit/'.$id);
 		    }
            
 		} else {
@@ -176,7 +251,7 @@ class Photo extends CI_Controller
 
         $data['photo'] = $this->Model_photo->getData($id);
         if($data['photo']) {
-            unlink('./public/uploads/'.$data['photo']['photo_name']);
+            unlink('./public/uploads/gallery/'.$data['photo']['photo_name']);
         }
 
         $this->Model_photo->delete($id);
@@ -184,5 +259,19 @@ class Photo extends CI_Controller
 		$this->session->set_flashdata('success',$success);
         redirect(base_url().'backend/admin/photo');
     }
+
+	public function favorite($id=0)
+	{
+		try {
+			$form_data = array(
+				'favorite' => intval($this->input->post('fav')) == 1 ? 0 : 1
+			);
+			$this->Model_photo->update($id,$form_data);
+
+			exit(json_encode(array('status' => true,'success' => 'Favorite is updated successfully.')));
+		} catch (Exception $e) {
+			exit(json_encode(array('status' => false, 'Message' => $e->getMessage())));
+		}
+	}
 
 }

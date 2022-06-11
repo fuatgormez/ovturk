@@ -28,7 +28,7 @@ class Client extends CI_Controller
 
 	public function index()
 	{
-		$data['client'] = $this->Model_client->show();
+		$data['clients'] = $this->Model_client->show();
 
 		$this->load->view('backend/admin/view_header',$data);
 		$this->load->view('backend/admin/view_client',$data);
@@ -77,7 +77,8 @@ class Client extends CI_Controller
 		        }
 
 		        $final_name = 'client-'.$ai_id.'.'.$ext;
-		        move_uploaded_file( $path_tmp, './public/uploads/'.$final_name );
+		        move_uploaded_file( $path_tmp, './public/uploads/client/'.$final_name );
+				move_uploaded_file( $path_tmp, './public/uploads/slider/'.$final_name );
 
 		        $form_data = array(
 					'name'  => $_POST['name'],
@@ -160,7 +161,7 @@ class Client extends CI_Controller
 					unlink('./public/uploads/'.$data['client']['photo']);
 
 					$final_name = 'client-'.$id.'.'.$ext;
-		        	move_uploaded_file( $path_tmp, './public/uploads/'.$final_name );
+		        	move_uploaded_file( $path_tmp, './public/uploads/client/'.$final_name );
 
 		        	$form_data = array(
 						'name'  => $this->input->post('name'),
@@ -200,7 +201,7 @@ class Client extends CI_Controller
 
         $data['client'] = $this->Model_client->get_client($id);
         if($data['client']) {
-            unlink('./public/uploads/'.$data['client']['photo']);
+            unlink('./public/uploads/client/'.$data['client']['photo']);
         }
 
         $this->Model_client->delete($id);

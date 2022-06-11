@@ -79,7 +79,7 @@ $lang["payment_success_message_alert"] = "Die Bestellung wurde erfolgreich erste
 $lang["payment_canceled_message_alert"] = "Die Bestellung wurde abgebrochen, Du kannst dennoch Deine Bestellung abschliessen.";
 
 //Shop Email
-$lang['payment_email_message'] = "Irispicture Shop Email";
+$lang['payment_email_message'] = "Shop Email";
 
 //Checkout Form
 $lang["payment_form_store_select_desc"] = "Bevorzugter Standort:";

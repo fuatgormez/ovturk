@@ -38,7 +38,7 @@ class Select_land extends CI_Controller
         $data['page_home'] = $this->Model_common->all_page_home();
         $data['page_search'] = $this->Model_common->all_page_search();
         $data['comment'] = $this->Model_common->all_comment();
-        $data['social'] = $this->Model_common->all_social();
+        $data['socials'] = $this->Model_common->all_social();
         $data['all_news'] = $this->Model_common->all_news();
         $data['services'] = $this->Model_service->all_service();
         $data['page_contact'] = $this->Model_common->all_page_contact();
@@ -48,21 +48,13 @@ class Select_land extends CI_Controller
         $data['stores'] = $this->Model_common->get_all_store();
         $data['store_langs'] = $this->Model_common->get_all_store_value();
 
-        $this->load->library('facebook_pixel');
-
-		if (base_url() === "https://www.irispicture.com/" || base_url() === "https://www.youririsfoto.nl/" || base_url() === "https://www.youririsfoto.com/" || base_url() === "https://www.youririsfoto.be/") {
-            $this->facebook_pixel->FindLocation(
-            // $pixel_id, $token
-            $this->Model_common->all_setting()['facebook_init'],
-            $this->Model_common->all_setting()['facebook_access_token']
-            );
-        }
 
         $data['theme'] = $data['setting']['layout'];
 
         $this->load->view('layout/' . $data['setting']['layout'] . '/view_header', $data);
         if ($data['setting']['website_status_frontend'] === 'Active' || in_array($this->session->userdata('role'), ['Superadmin', 'Admin'])) {
-            $this->load->view('layout/' . $data['setting']['layout'] . '/view_select_land', $data);
+            redirect($_SERVER['HTTP_REFERER']);
+            //$this->load->view('layout/' . $data['setting']['layout'] . '/view_select_land', $data);
         } else {
             $this->load->view('view_maintenance', $data);
         }

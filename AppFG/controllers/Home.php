@@ -27,7 +27,7 @@ class Home extends CI_Controller {
 		$data['setting'] = $this->Model_common->all_setting();
 		$data['page_home'] = $this->Model_common->all_page_home();
 //		$data['comment'] = $this->Model_common->all_comment();
-		$data['social'] = $this->Model_common->all_social();
+		$data['socials'] = $this->Model_common->all_social();
 		$data['all_news'] = $this->Model_common->all_news();
 		$data['all_news_category'] = $this->Model_common->all_news_category();
 
@@ -44,7 +44,7 @@ class Home extends CI_Controller {
 		$data['home_faq'] = $this->Model_home->all_faq_home();
 
 		$data['portfolio_category'] = $this->Model_portfolio->get_portfolio_category();
-		$data['portfolio'] = $this->Model_portfolio->get_portfolio_data();
+		$data['portfolios'] = $this->Model_portfolio->get_portfolio_data();
 
 		$data['portfolio_footer'] = $this->Model_portfolio->get_portfolio_data();
 
@@ -52,12 +52,7 @@ class Home extends CI_Controller {
 		$land_id = empty($this->session->userdata('land_id')) ? redirect(base_url('select_land')) : $this->session->userdata('land_id') ;
         $store_id = empty($this->session->userdata('store_id')) ? redirect(base_url('select_land')) : $this->session->userdata('store_id') ;
         $store_lang_data = empty($this->session->userdata('store_language')) ? redirect(base_url('select_land')) : $this->session->userdata('store_language') ;
-        // $store_currency_icon = empty($this->session->userdata('currency_icon')) ? redirect(base_url()) : $this->session->userdata('currency_icon') ;
-        // $store_currency_code = empty($this->session->userdata('currency_code')) ? redirect(base_url()) : $this->session->userdata('currency_code') ;
-
-//        $data['product'] = $this->Model_shopping_cart->single_product($store_lang_data);
-        // $data['products'] = $this->Model_shopping_cart->all_product($store_lang_data,$store_id);
-        // $data['product_categories'] = $this->Model_shopping_cart->all_product_category($store_lang_data,$store_id);
+        
         $data['products'] = $this->Model_shopping_cart->all_product($store_lang_data, $land_id);
         $data['product_categories'] = $this->Model_shopping_cart->all_product_category($store_lang_data);
         $data['product_category_photo'] = $this->Model_shopping_cart->all_product_category_photo();
@@ -67,14 +62,10 @@ class Home extends CI_Controller {
         $data['stores'] = $this->Model_common->get_all_store();
         $data['store_langs'] = $this->Model_common->get_all_store_value();
 
-		if (base_url() === "https://www.irispicture.com/" || base_url() === "https://www.youririsfoto.nl/" || base_url() === "https://www.youririsfoto.com/" || base_url() === "https://www.youririsfoto.be/iptal") {
-            $this->facebook_pixel->PageView(
-            // $pixel_id, $token
-            $this->Model_common->all_setting()['facebook_init'],
-            $this->Model_common->all_setting()['facebook_access_token']
-            );
-        }
-
+		
+		foreach(array_chunk($data['clients'],10) as $key => $row){
+			$data['clients_slider'][$key] = $row;
+		}
 
 		$data['theme'] = $data['setting']['layout'];
 

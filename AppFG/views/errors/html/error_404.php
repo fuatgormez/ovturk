@@ -7,10 +7,10 @@ defined('BASEPATH') or exit('No direct script access allowed');
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="x-ua-compatible" content="ie=edge">
-	<title>IRISPICTURE</title>
-	<meta name="description" content="IRISPICTURE">
+	<title>PLUSREKLAMCILIK - Izmir </title>
+	<meta name="description" content="PLUSREKLAMCILIK">
 	<meta name="author" content="FG">
-	<meta name="keywords" content="IRISPICTURE" />
+	<meta name="keywords" content="PLUSREKLAMCILIK, izmir matbaa, izmir tablea" />
 	<meta name="robots" content="INDEX,FOLLOW">
 
 	<!-- Mobile Specific Metas -->
@@ -314,9 +314,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
 		</g>
 	</svg>
 	<div class="content">
-		<h3><a href="/">Homepage</a></h3>
-		<h3>Hello?? Is somebody there?!?</h3>
-		<p>We know it’s scary, but the page you’re trying to reach can’t be found. Perhaps it was just a bad <span>link</span> dream?</p>
+		<h3><a href="/">Anasayfa</a></h3>
+		<h3>Merhaba?? Bir sorun meydana geldi?</h3>
+		<p>Aradiginiz sayfa bulunamadi</p>
 	</div>
 
 

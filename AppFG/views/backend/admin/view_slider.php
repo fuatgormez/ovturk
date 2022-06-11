@@ -11,23 +11,17 @@
 	<div class="row">
 		<div class="col-md-12">
 
-			<?php
-	        if($this->session->flashdata('error')) {
-	            ?>
+			<?php if($this->session->flashdata('error')) :?>
 				<div class="callout callout-danger">
 					<p><?php echo $this->session->flashdata('error'); ?></p>
 				</div>
-	            <?php
-	        }
-	        if($this->session->flashdata('success')) {
-	            ?>
+	        <?php endif;?>
+
+	        <?php if($this->session->flashdata('success')) :?>
 				<div class="callout callout-success">
 					<p><?php echo $this->session->flashdata('success'); ?></p>
 				</div>
-	            <?php
-	        }
-	        ?>
-
+	        <?php endif;?>
 	        
 			<div class="box box-info">
 				<div class="box-body table-responsive">
@@ -42,32 +36,28 @@
 								<th>Button2 Text</th>
 								<th>Button2 URL</th>
 								<th>Position</th>
+								<th>Status</th>
 								<th width="140">Action</th>
 							</tr>
 						</thead>
 						<tbody>
-							<?php
-							$i=0;							
-							foreach ($slider as $row) {
-								$i++;
-								?>
+							<?php foreach ($slider as $i => $row) :?>
 								<tr>
 									<td><?php echo $i; ?></td>
-									<td style="width:150px;"><img src="<?php echo base_url(); ?>public/uploads/<?php echo $row['photo']; ?>" alt="<?php echo $row['heading']; ?>" style="width:140px;"></td>
+									<td style="width:150px;"><img src="<?php echo base_url(); ?>public/uploads/slider/<?php echo $row['photo'].'?v='.sha1(time()); ?>" alt="<?php echo $row['heading']; ?>" style="width:140px;"></td>
 									<td><?php echo $row['heading']; ?></td>
 									<td><?php echo $row['button1_text']; ?></td>
 									<td><?php echo $row['button1_url']; ?></td>
 									<td><?php echo $row['button2_text']; ?></td>
 									<td><?php echo $row['button2_url']; ?></td>
 									<td><?php echo $row['position']; ?></td>
+									<td><?php echo $row['status']; ?></td>
 									<td>										
 										<a href="<?php echo base_url(); ?>backend/admin/slider/edit/<?php echo $row['id']; ?>" class="btn btn-primary btn-xs">Edit</a>
 										<a href="<?php echo base_url(); ?>backend/admin/slider/delete/<?php echo $row['id']; ?>" class="btn btn-danger btn-xs" onClick="return confirm('Are you sure?');">Delete</a>
 									</td>
 								</tr>
-								<?php
-							}
-							?>							
+								<?php endforeach; ?>
 						</tbody>
 					</table>
 				</div>

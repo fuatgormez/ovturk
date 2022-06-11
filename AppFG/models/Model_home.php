@@ -6,7 +6,7 @@ class Model_home extends CI_Model
 
     public function all_slider()
     {
-        $query = $this->db->query("SELECT * FROM tbl_slider ORDER BY id ASC");
+        $query = $this->db->query("SELECT * FROM tbl_slider WHERE status = ? ORDER BY id ASC",array('Show'));
         return $query->result_array();
     }
 

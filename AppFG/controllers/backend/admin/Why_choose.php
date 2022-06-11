@@ -65,10 +65,11 @@ class Why_choose extends CI_Controller
 		            $valid = 0;
 		            $error .= 'You must have to upload jpg, jpeg, gif or png file for featured photo<br>';
 		        }
-		    } else {
-		    	$valid = 0;
-		        $error .= 'You must have to select a photo for featured photo<br>';
-		    }
+		    } 
+			// else {
+		    // 	$valid = 0;
+		    //     $error .= 'You must have to select a photo for featured photo<br>';
+		    // }
 
 		    
 		    if($valid == 1) 
@@ -79,7 +80,7 @@ class Why_choose extends CI_Controller
 		        }
 
 		        $final_name = 'why-choose-'.$ai_id.'.'.$ext;
-		        move_uploaded_file( $path_tmp, './public/uploads/'.$final_name );
+		        move_uploaded_file( $path_tmp, './public/uploads/why-choose/'.$final_name );
 
 		        $form_data = array(
 					'name'    => $_POST['name'],
@@ -164,10 +165,10 @@ class Why_choose extends CI_Controller
 		            $this->Model_why_choose->update($id,$form_data);
 				}
 				else {
-					unlink('./public/uploads/'.$data['why_choose']['photo']);
+					unlink('./public/uploads/why-choose/'.$data['why_choose']['photo']);
 
 					$final_name = 'why-choose-'.$id.'.'.$ext;
-		        	move_uploaded_file( $path_tmp, './public/uploads/'.$final_name );
+		        	move_uploaded_file( $path_tmp, './public/uploads/why-choose/'.$final_name );
 
 		        	$form_data['photo'] = $final_name;
 

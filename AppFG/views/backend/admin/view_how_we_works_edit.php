@@ -8,27 +8,18 @@
 </section>
 
 <section class="content">
-
 	<div class="row">
 		<div class="col-md-12">
-
-			<?php
-			if($this->session->flashdata('error')) {
-				?>
+			<?php if($this->session->flashdata('error')) : ?>
 				<div class="callout callout-danger">
 					<p><?php echo $this->session->flashdata('error'); ?></p>
 				</div>
-				<?php
-			}
-			if($this->session->flashdata('success')) {
-				?>
+				<?php endif; ?>
+			<?php if($this->session->flashdata('success')) :?>
 				<div class="callout callout-success">
 					<p><?php echo $this->session->flashdata('success'); ?></p>
 				</div>
-				<?php
-			}
-			?>
-
+			<?php endif;?>
 			<?php echo form_open_multipart(base_url().'backend/admin/how_we_works/edit/'.$how_we_works['id'],array('class' => 'form-horizontal'));?>
 				<div class="box box-info">
 					<div class="box-body">						
@@ -53,7 +44,7 @@
 						<div class="form-group">
 							<label for="" class="col-sm-2 control-label">Existing Photo</label>
 							<div class="col-sm-9" style="padding-top:5px;">
-								<img src="<?php echo base_url(); ?>public/uploads/<?php echo $how_we_works['photo']; ?>" alt="How We Works Photo" style="width:200px;">
+								<img src="<?php echo base_url(); ?>public/uploads/how_we_works/<?php echo $how_we_works['photo']; ?>" alt="How We Works Photo" style="width:200px;">
 							</div>
 						</div>
 						<div class="form-group">

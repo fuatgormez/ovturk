@@ -47,7 +47,7 @@ class How_we_works extends CI_Controller
 
 			$this->form_validation->set_rules('name', 'Name', 'trim|required');
 			$this->form_validation->set_rules('content', 'Content', 'trim|required');
-			$this->form_validation->set_rules('icon', 'Icon', 'trim|required');
+			// $this->form_validation->set_rules('icon', 'Icon', 'trim|required');
 
 			if($this->form_validation->run() == FALSE) {
 				$valid = 0;
@@ -80,7 +80,7 @@ class How_we_works extends CI_Controller
 
                 if($_FILES["photo"]["size"]>0){
 		            $final_name = 'how-we-works-'.$ai_id.'.'.$ext;
-		            move_uploaded_file( $path_tmp, './public/uploads/'.$final_name );
+		            move_uploaded_file( $path_tmp, './public/uploads/how_we_works/'.$final_name );
                 }else{
                     $final_name = '';
                 }
@@ -133,7 +133,7 @@ class How_we_works extends CI_Controller
 
 			$this->form_validation->set_rules('name', 'Name', 'trim|required');
 			$this->form_validation->set_rules('content', 'Content', 'trim|required');
-			$this->form_validation->set_rules('icon', 'Icon', 'trim|required');
+			// $this->form_validation->set_rules('icon', 'Icon', 'trim|required');
 
 			if($this->form_validation->run() == FALSE) {
 				$valid = 0;
@@ -168,11 +168,11 @@ class How_we_works extends CI_Controller
 		            $this->Model_how_we_works->update($id,$form_data);
 				}
 				else {
-					unlink('./public/uploads/'.$data['how_we_works']['photo']);
+					unlink('./public/uploads/how_we_works/'.$data['how_we_works']['photo']);
 
                     if($_FILES["photo"]["size"]>0){
                         $final_name = 'how-we-works-'.$id.'.'.$ext;
-                        move_uploaded_file( $path_tmp, './public/uploads/'.$final_name );
+                        move_uploaded_file( $path_tmp, './public/uploads/how_we_works/'.$final_name );
                     }else{
                         $final_name = '';
                     }
@@ -210,7 +210,7 @@ class How_we_works extends CI_Controller
 
         $data['how_we_works'] = $this->Model_how_we_works->getData($id);
         if($data['how_we_works']) {
-            unlink('./public/uploads/'.$data['how_we_works']['photo']);
+            unlink('./public/uploads/how_we_works/'.$data['how_we_works']['photo']);
         }
 
         $this->Model_how_we_works->delete($id);

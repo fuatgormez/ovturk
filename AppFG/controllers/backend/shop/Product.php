@@ -4,7 +4,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class Product extends CI_Controller
 {
 
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
 
@@ -14,6 +14,7 @@ class Product extends CI_Controller
 
         $this->load->model('backend/shop/Model_common');
         $this->load->model('backend/shop/Model_product');
+        $this->load->model('backend/admin/Model_tag');
 
         $data['setting'] = $this->Model_common->get_setting_data();
 
@@ -70,7 +71,7 @@ class Product extends CI_Controller
                 $ext = pathinfo($path, PATHINFO_EXTENSION);
                 $file_name = basename($path, '.' . $ext);
                 $ext_check = $this->Model_common->extension_check_photo($ext);
-                if ($ext_check == FALSE) {
+                if ($ext_check == false) {
                     $valid = 0;
                     $error .= 'You must have to upload jpg, jpeg, gif or png file for featured photo<br>';
                 }
@@ -81,7 +82,6 @@ class Product extends CI_Controller
 
             // if($_FILES['photo']['name'])
 
-
             if ($valid == 1) {
                 $next_id = $this->Model_product->get_auto_increment_id();
                 foreach ($next_id as $row) {
@@ -91,7 +91,6 @@ class Product extends CI_Controller
                 $final_name = 'product_' . $ai_id . '.' . $ext;
                 $final_name_banner = 'product_banner_' . $ai_id . '.' . $ext;
                 $final_name_video = 'product_video_' . $ai_id . '.' . $ext;
-
 
                 $final_name_banner = "";
                 $final_name_video = "";
@@ -130,7 +129,7 @@ class Product extends CI_Controller
                     'product_type' => $this->input->post('product_type'),
                     'product_sku' => $this->input->post('product_sku'),
                     'status' => $this->input->post('product_status'),
-                    'row' => $this->input->post('product_row')
+                    'row' => $this->input->post('product_row'),
                 );
 
                 $this->Model_product->add($form_data);
@@ -155,12 +154,11 @@ class Product extends CI_Controller
                             'product_price_old' => $value['product_price_old'],
                             'meta_title' => $value['meta_title'],
                             'meta_keyword' => $value['meta_keyword'],
-                            'meta_description' => $value['meta_description']
+                            'meta_description' => $value['meta_description'],
                         );
                         $this->Model_product->add_lang($form_data_lang);
                     }
                 }
-
 
                 if (isset($_FILES['photos']["name"]) && isset($_FILES['photos']["tmp_name"])) {
                     $photos = array();
@@ -184,7 +182,7 @@ class Product extends CI_Controller
 
                         $ext = pathinfo($photos[$i], PATHINFO_EXTENSION);
                         $ext_check = $this->Model_common->extension_check_photo($ext);
-                        if ($ext_check == FALSE) {
+                        if ($ext_check == false) {
                             // Nothing to do, just skip
                         } else {
                             $final_names[$m] = $z . '.' . $ext;
@@ -198,7 +196,7 @@ class Product extends CI_Controller
                 for ($i = 0; $i < count($final_names); $i++) {
                     $form_data = array(
                         'product_id' => $ai_id,
-                        'photo' => $final_names[$i]
+                        'photo' => $final_names[$i],
                     );
                     $this->Model_product->add_photos($form_data);
                 }
@@ -236,11 +234,10 @@ class Product extends CI_Controller
         $error = '';
         $success = '';
 
-
         if (isset($_POST['form1'])) {
             $valid = 1;
 
-            if (!in_array($this->session->userdata('role'), ['Superadmin', 'Admin', 'Ads'])) {
+            if (!in_array($this->session->userdata('role'), ['Superadmin', 'Admin'])) {
                 redirect(base_url() . 'backend/shop/product');
             }
 
@@ -252,17 +249,15 @@ class Product extends CI_Controller
             $path_tmp_banner = $_FILES['banner']['tmp_name'];
             $path_tmp_video = $_FILES['video']['tmp_name'];
 
-
             if ($path != '') {
                 $ext = pathinfo($path, PATHINFO_EXTENSION);
                 $file_name = basename($path, '.' . $ext);
                 $ext_check = $this->Model_common->extension_check_photo($ext);
-                if ($ext_check == FALSE) {
+                if ($ext_check == false) {
                     $valid = 0;
                     $error .= 'You must have to upload jpg, jpeg, gif or png file for featured photo<br>';
                 }
             }
-
 
             if ($valid == 1) {
                 $data['product'] = $this->Model_product->getSingleProduct($id);
@@ -275,83 +270,6 @@ class Product extends CI_Controller
                     break;
                 }
 
-                foreach ((array) $this->input->post('product_updatable_add') as $product_updatable_add_row) {
-                    $allow_data = array(
-                        "product_id" => $id,
-                        "updatable" => 1,
-                        "allow_product" => $product_updatable_add_row
-                    );
-
-                    $control_allow_product = $this->Model_product->product_allow_check($id, $product_updatable_add_row);
-
-                    if ($control_allow_product > 0) {
-                        $this->Model_product->product_allow_update($id, $product_updatable_add_row, $allow_data);
-                    } else {
-                        $this->Model_product->product_allow_insert($allow_data);
-                    }
-
-                    // $this->Model_product->product_allow_insert($allow_data);
-                }
-
-                foreach ((array) $this->input->post('product_extra_add') as $product_extra_add_row) {
-                    $allow_data = array(
-                        "product_id" => $id,
-                        "extra" => 1,
-                        "allow_product" => $product_extra_add_row
-                    );
-
-                    $control_allow_product = $this->Model_product->product_allow_check($id, $product_extra_add_row);
-
-                    if ($control_allow_product > 0) {
-                        $this->Model_product->product_allow_update($id, $product_extra_add_row, $allow_data);
-                    } else {
-                        $this->Model_product->product_allow_insert($allow_data);
-                    }
-
-                    // $this->Model_product->product_allow_insert($allow_data);
-                }
-
-                foreach ((array) $this->input->post('allow_product') as $allow_productKey => $allow_product) {
-
-                    if ($allow_product) {
-
-                        if ($this->input->post('product_updatable[' . $allow_product . ']') === "on") {
-                            $product_updatable = 1;
-                        } else {
-                            $product_updatable = 0;
-                        }
-
-                        if ($this->input->post('product_extra[' . $allow_product . ']') === "on") {
-                            $product_extra = 1;
-                        } else {
-                            $product_extra = 0;
-                        }
-
-                        if ($this->input->post('product_allow_store[' . $allow_product . ']')) {
-                            $product_allow_store = json_encode($this->input->post('product_allow_store[' . $allow_product . ']'));
-                            // $product_allow_store = implode(',', $this->input->post('product_allow_store['.$allow_product.']'));
-                        } else {
-                            $product_allow_store = "";
-                        }
-
-                        $allow_data = array(
-                            "product_id" => $id,
-                            "allow_product" => $allow_product,
-                            "allow_store" => $product_allow_store,
-                            "updatable" => $product_updatable,
-                            "extra" => $product_extra
-                        );
-
-                        $control_allow_product = $this->Model_product->product_allow_check($id, $allow_product);
-
-                        if ($control_allow_product > 0) {
-                            $this->Model_product->product_allow_update($id, $allow_product, $allow_data);
-                        } else {
-                            $this->Model_product->product_allow_insert($allow_data);
-                        }
-                    }
-                }
-
                 $form_data = array(
                     'category_id' => $category_id,
                     'with_name' => $this->input->post('with_name'),
@@ -360,37 +278,37 @@ class Product extends CI_Controller
                     'eye_quantity' => $this->input->post('eye_quantity'),
                     'product_type' => $this->input->post('product_type'),
                     'product_attribute' => $this->input->post('product_attribute'),
+                    'tag' => json_encode($this->input->post('tag')),
                     // 'product_updatable' => $product_updatable,
                     // 'product_extras' => $product_extra,
                     // 'product_allow_store' => $product_allow_store,
                     'product_sku' => $this->input->post('product_sku'),
                     'status' => $this->input->post('product_status'),
                     'row' => $this->input->post('product_row'),
-                    'block_the_sale' => $this->input->post('block_the_sale')
+                    'block_the_sale' => $this->input->post('block_the_sale'),
                 );
 
-                    $final_name = 'product_' . $id . '.' . strtolower($ext);
-                    $final_name_banner = 'product_' . $id . '_' . $path_banner;
-                    $final_name_video = 'product_' . $id . '_' . $path_video;
+                $final_name = 'product_' . $id . '.' . strtolower($ext);
+                $final_name_banner = 'product_' . $id . '_' . $path_banner;
+                $final_name_video = 'product_' . $id . '_' . $path_video;
 
-                    if (!empty($path)) {
-                        unlink('./public/uploads/product_photos/thumbnail/' . $data['product']['thumbnail']);
-                        $form_data['thumbnail'] = $final_name;
-                        move_uploaded_file($path_tmp, './public/uploads/product_photos/thumbnail/' . $final_name);
-                    }
-                    if (!empty($path_banner)) {
-                        unlink('./public/uploads/product_photos/banner/' . $data['product']['banner']);
-                        $form_data['banner'] = $final_name_banner;
-                        move_uploaded_file($path_tmp_banner, './public/uploads/product_photos/banner/' . $final_name_banner);
-                    }
-                    if (!empty($path_video)) {
-                        unlink('./public/uploads/product_photos/video/' . $data['product']['video']);
-                        $form_data['video'] = $final_name_video;
-                        move_uploaded_file($path_tmp_video, './public/uploads/product_photos/video/' . $final_name_video);
-                    }
+                if (!empty($path)) {
+                    unlink('./public/uploads/product_photos/thumbnail/' . $data['product']['thumbnail']);
+                    $form_data['thumbnail'] = $final_name;
+                    move_uploaded_file($path_tmp, './public/uploads/product_photos/thumbnail/' . $final_name);
+                }
+                if (!empty($path_banner)) {
+                    unlink('./public/uploads/product_photos/banner/' . $data['product']['banner']);
+                    $form_data['banner'] = $final_name_banner;
+                    move_uploaded_file($path_tmp_banner, './public/uploads/product_photos/banner/' . $final_name_banner);
+                }
+                if (!empty($path_video)) {
+                    unlink('./public/uploads/product_photos/video/' . $data['product']['video']);
+                    $form_data['video'] = $final_name_video;
+                    move_uploaded_file($path_tmp_video, './public/uploads/product_photos/video/' . $final_name_video);
+                }
 
-                    $this->Model_product->update($id, $form_data);
-                
+                $this->Model_product->update($id, $form_data);
 
                 $postedData = $this->input->post();
 
@@ -411,7 +329,7 @@ class Product extends CI_Controller
                             'product_price_old' => $value['product_price_old'],
                             'meta_title' => $value['meta_title'],
                             'meta_keyword' => $value['meta_keyword'],
-                            'meta_description' => $value['meta_description']
+                            'meta_description' => $value['meta_description'],
                         );
                         $this->Model_product->update_lang($id, $form_data_lang, $key);
                     }
@@ -439,7 +357,7 @@ class Product extends CI_Controller
 
                         $ext = pathinfo($photos[$i], PATHINFO_EXTENSION);
                         $ext_check = $this->Model_common->extension_check_photo($ext);
-                        if ($ext_check == FALSE) {
+                        if ($ext_check == false) {
                             // Nothing to do, just skip
                         } else {
                             $final_names[$m] = $z . '.' . strtolower($ext);
@@ -454,7 +372,7 @@ class Product extends CI_Controller
                     $form_data = array(
                         'product_id' => $id,
                         'category_id' => $this->input->post('category_id'),
-                        'photo' => $final_names[$i]
+                        'photo' => $final_names[$i],
                     );
                     $this->Model_product->add_photos($form_data);
                 }
@@ -476,20 +394,17 @@ class Product extends CI_Controller
             //$data['all_photo_category'] = $this->Model_product->get_all_photo_category();
             $data['all_photos_by_id'] = $this->Model_product->get_all_photos_by_category_id($id);
 
-
             $data['all_store'] = $this->Model_common->get_all_store();
             $data['all_store_value'] = $this->Model_common->get_all_store_value();
 
             $data['all_products'] = $this->Model_product->get_all_product($this->session->userdata('land_id'));
-            $data['product_allows'] = $this->Model_product->product_allow($id);
-            $data['product_allow_all'] = $this->Model_product->product_allow_all();
+            // $data['product_allows'] = $this->Model_product->product_allow($id);
+            // $data['product_allow_all'] = $this->Model_product->product_allow_all();
 
-
+            $data['tags'] = $this->Model_tag->show();
 
             $all_products = $this->Model_product->get_all_product($this->session->userdata('land_id'));
             $product_allows = $this->Model_product->product_allow($id);
-
-
 
             $this->load->view('backend/admin/view_header', $data);
             $this->load->view('backend/shop/view_product_edit', $data);
@@ -550,10 +465,8 @@ class Product extends CI_Controller
 
     public function product_add_type()
     {
-
         $error = '';
         $success = '';
-
 
         if (isset($_POST['form1'])) {
 
@@ -566,7 +479,7 @@ class Product extends CI_Controller
             $this->form_validation->set_rules('product_type', 'Product type', 'required');
             $this->form_validation->set_rules('row', 'Row', 'integer');
 
-            if ($this->form_validation->run() == FALSE) {
+            if ($this->form_validation->run() == false) {
                 $valid = 0;
                 $error = validation_errors();
             }
@@ -574,8 +487,8 @@ class Product extends CI_Controller
             if ($valid == 1) {
 
                 $form_data = array(
-                    'type_value'     => $this->input->post('product_type'),
-                    'row'   => $this->input->post('row')
+                    'type_value' => $this->input->post('product_type'),
+                    'row' => $this->input->post('row'),
                 );
                 $this->Model_product->add_product_type($form_data);
 
@@ -607,7 +520,6 @@ class Product extends CI_Controller
         $error = '';
         $success = '';
 
-
         if (isset($_POST['form1'])) {
 
             if (!in_array($this->session->userdata('role'), ['Superadmin', 'Admin'])) {
@@ -619,7 +531,7 @@ class Product extends CI_Controller
             $this->form_validation->set_rules('product_type', 'Product type', 'required');
             $this->form_validation->set_rules('row', 'Row', 'integer');
 
-            if ($this->form_validation->run() == FALSE) {
+            if ($this->form_validation->run() == false) {
                 $valid = 0;
                 $error = validation_errors();
             }
@@ -627,8 +539,8 @@ class Product extends CI_Controller
             if ($valid == 1) {
 
                 $form_data = array(
-                    'type_value'     => $this->input->post('product_type'),
-                    'row'   => $this->input->post('row')
+                    'type_value' => $this->input->post('product_type'),
+                    'row' => $this->input->post('row'),
                 );
                 $this->Model_product->update_product_type($type_id, $form_data);
 
@@ -685,30 +597,27 @@ class Product extends CI_Controller
 
     public function fuat()
     {
-
-        exit("burdasin canim");
+        // exit("burdasin canim");
         $configVideo['upload_path'] = 'assets/gallery/images'; # check path is correct
         $configVideo['max_size'] = '102400';
         $configVideo['allowed_types'] = 'mp4'; # add video extenstion on here
-        $configVideo['overwrite'] = FALSE;
-        $configVideo['remove_spaces'] = TRUE;
+        $configVideo['overwrite'] = false;
+        $configVideo['remove_spaces'] = true;
         $video_name = random_string('numeric', 5);
         $configVideo['file_name'] = $video_name;
 
         $this->load->library('upload', $configVideo);
         $this->upload->initialize($configVideo);
 
-        if (!$this->upload->do_upload('uploadan')) # form input field attribute
-        {
-            # Upload Failed
-            $this->session->set_flashdata('error', $this->upload->display_errors());
-            redirect('controllerName/method');
-        } else {
-            # Upload Successfull
-            $url = 'assets/gallery/images' . $video_name;
-            $set1 =  $this->Model_name->uploadData($url);
-            $this->session->set_flashdata('success', 'Video Has been Uploaded');
-            redirect('controllerName/method');
-        }
+        if (!$this->upload->do_upload('uploadan')) # form input field attribute {
+        # Upload Failed
+        $this->session->set_flashdata('error', $this->upload->display_errors());
+        redirect('controllerName/method');
+
+        # Upload Successfull
+        // $url = 'assets/gallery/images' . $video_name;
+        // $set1 = $this->Model_name->uploadData($url);
+        // $this->session->set_flashdata('success', 'Video Has been Uploaded');
+        // redirect('controllerName/method');
     }
 }

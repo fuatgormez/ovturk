@@ -1,133 +1,196 @@
-<div class="shop dialog dialog-lg fadeIn animated" style="animation-duration: 300ms;">
-    <div class="row">
-        <div class="col-lg-4">
-            <div class="thumb-gallery-wrapper">
-                <div class="thumb-gallery-detail owl-carousel owl-theme manual nav-inside nav-style-1 nav-dark mb-3">
-                    <?php foreach ($category_photos as $category_photo) : ?>
-                        <?php if ($category_id == $category_photo['product_category_id']) : ?>
-                            <div class="product-image">
-                                <img alt="" class="img-fluid thumbnail<?php echo $category_id; ?>" src="<?php echo base_url('public/uploads/product_category_photos/'.$category_photo['photo']); ?>" data-zoom-image="<?php echo base_url('public/uploads/product_category_photos/'.$category_photo['photo']); ?>">
-                            </div>
-                        <?php endif; ?>
-                    <?php endforeach; ?>
-                </div>
-                <div class="thumb-gallery-thumbs owl-carousel owl-theme manual thumb-gallery-thumbs">
-                    <?php foreach ($category_photos as $category_photo) : ?>
-                        <?php if ($category_id == $category_photo['product_category_id']) : ?>
-                            <div class="cur-pointer">
-                                <img alt="" class="img-fluid" src="<?php echo base_url('public/uploads/product_category_photos/'.$category_photo['photo']); ?>">
-                            </div>
-                        <?php endif; ?>
-                    <?php endforeach; ?>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-8">
-            <?php echo form_open(base_url('shop/cart/add'), array('class' => 'form-horizontal', 'name' => 'basket')); ?>
-            <div class="summary entry-summary position-relative">
-                <h1 class="font-weight-bold text-7 mb-0"><?php echo $category['category_name']; ?></h1>
-                <p class="text-3-5 mb-3"><?php echo $category['short_description']; ?></p>
-                <p class="text-3-5 mb-3"><?php echo $category['description']; ?></p>
-                <table class="table table-borderless" style="max-width: 800px;">
-                    <tbody>
-                        <tr>
-                            <td class="px-0 py-2">
-                                <div class="custom-select-1">
-                                    <select name="product_id" class="form-control form-select text-3 h-auto py-2 text-black font-weight-bold select_product_price" data-counter="<?php echo $category_id; ?>">
-                                        <?php $buttom_price = 0;
-                                        $buttom_price_old = 0;
-                                        $counter = 0;
-                                        $product_id = '';
-                                        $product_name = ''; ?>
-                                        <?php foreach ($products as $key => $row_product) : ?>
-                                            <?php if ($counter == 0) {
-                                                $buttom_price_old = $row_product['product_price_old'];
-                                                $product_id = $row_product['id'];
-                                                $product_name = $row_product['product_name'];
-                                            } ?>
-                                            <?php $buttom_price = $row_product['product_price']; ?>
-                                            <option value="<?php echo $row_product['id']; ?>" data-product-price-old="<?php echo $row_product['product_price_old']; ?>" data-product-thumbnail="<?php echo $row_product['thumbnail']; ?>" data-product-category-id="<?php echo $row_product['category_id']; ?>" data-product-id="<?php echo $row_product['id']; ?>" data-url="<?php echo 'product/'.$slug->url($category['category_name']).'/'.$slug->url($row_product['product_name']).'/'. $row_product['id']; ?>">
-                                                <?php echo $row_product['product_name']; ?> <?php echo $row_product['product_price']; ?> <?php echo $this->session->userdata('currency_icon'); ?>
-                                            </option>
-                                            <?php $counter = $counter + 1; ?>
-                                        <?php endforeach; ?>
-                                    </select>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <div class="price mb-4 justify-content-between">
-                    <del class="text-black p-1" id="select_product_price<?php echo $category_id; ?>"><?php echo $buttom_price_old !== "0.00" && $buttom_price_old != 0 ? $buttom_price_old : ''; ?></del>
-                    <a href="<?php echo base_url('product/'.$slug->url($category['category_name']).'/'.$slug->url($product_name).'/'. $product_id); ?>" class="product_link<?php echo $category['category_id']; ?>" style="float: right; font-size:12px;" title="Product Detail"><i class="icon-link icons" style="font-size: initial;"></i></a>
-                </div>
-                <a href="#" class="btn w-100 btn-dark btn-modern text-uppercase text-5 bg-color-hover-primary border-color-hover-primary add-to-basket-button" data-id=""><i class="d-icon-bag"></i> In den Warenkorb</a>
-            </div>
-            <?php echo form_close(); ?>
-
-        </div>
-        <hr class="mt-5">
-        <div class="col-lg-12 d-none">
-            <div class="owl-carousel owl-theme owl-loaded owl-drag owl-carousel-init" data-plugin-options="{'items': 1, 'autoplay': true, 'autoplayTimeout': 6000}" style="height: auto;">
-                <div class="owl-stage-outer">
-                    <div class="owl-stage" style="transform: translate3d(-1638px, 0px, 0px); transition: all 0.25s ease 0s; width: 3276px;">
-                        <?php foreach ($testimonials as $row) : ?>
-                            <div class="owl-item " style="width: 546px;">
-                                <div>
-                                    <div class="testimonial testimonial-style-2">
-                                        <div class="testimonial-arrow-down"></div>
-                                        <div class="testimonial-author">
-                                            <img src="<?php echo base_url(); ?>public/uploads/<?php echo $row['photo']; ?>" class="img-fluid rounded-circle" alt="">
-                                            <p><strong class="font-weight-extra-bold"><?php echo $row['name']; ?></strong></p>
-                                        </div>
-                                        <blockquote>
-                                            <p class="mb-0"><?php echo $row['comment']; ?></p>
-                                        </blockquote>
+<?php if($this->uri->segment('1').'/'.$this->uri->segment('2') === 'fotograf-video/4'):?>
+<div class="slider-container rev_slider_wrapper" style="height: 100vh;" id="home">
+	<div id="revolutionSlider" class="slider rev_slider" data-version="5.4.8" data-plugin-revolution-slider data-plugin-options="{'sliderLayout': 'fullscreen', 'delay': 9000, 'gridwidth': 1630, 'gridheight': 800, 'responsiveLevels': [4096,1200,992,500], 'parallax': { 'type': 'mouse', 'origo': 'enterpoint', 'speed': 1000, 'levels': [2,3,4,5,6,7,8,9,12,50], 'disable_onmobile': 'on' }}">
+		<ul>
+			<li class="slide-overlay" data-transition="fade">
+				<img src="<?php echo base_url('public/uploads/site-2022-fotograf-ana-resim-min.jpg');?>"
+					alt=""
+					data-bgposition="center center"
+					data-bgfit="cover"
+					data-bgrepeat="no-repeat"
+					class="rev-slidebg">
+				<div class="tp-caption rs-parallaxlevel-4"
+					data-frames='[{"from":"opacity:0;","speed":300,"to":"opacity:1;","delay":500,"ease":"Power2.easeInOut"},{"delay":"wait","speed":1000,"to":"o:0;","ease":"Power2.easeInOut"}]'
+					data-x="center" data-hoffset="['-150','-150','-150','-150']"
+					data-y="center" data-voffset="['-20','-20','-20','-20']"
+					data-width="['430','430','630','830]"
+					data-height="['330','330','530','730']">
+						<svg class="custom-square-1 custom-transition-1 custom-mobile-square-thickness" width="100%" height="100%">
+							<rect width="100%" height="100%" fill="none" stroke-width="40" stroke="#000" />
+						</svg>
+					</div>
+				<h1 class="tp-caption font-weight-bold text-color-light ws-normal rs-parallaxlevel-3"
+					data-frames='[{"from":"opacity:0;y:[50%];","speed":2000,"to":"opacity:1;","delay":800,"ease":"Power3.easeInOut"},{"delay":"wait","speed":1000,"to":"o:0;","ease":"Power2.easeInOut"}]'
+					data-x="center" data-hoffset="['0','0','30','30']"
+					data-y="center" data-voffset="['-55','-55','-85','-120']"
+					data-width="['580','580','780','1000']"
+					data-fontsize="['66','66','86','120']"
+					data-lineheight="['72','72','90','125']">Düğün fotoğrafçılığı</h1>
+				<div class="tp-caption font-weight-light text-color-light ls-0 rs-parallaxlevel-4"
+					data-frames='[{"from":"opacity:0;y:[50%]","speed":2000,"to":"opacity:0.7;","delay":1200,"ease":"Power3.easeInOut"},{"delay":"wait","speed":1000,"to":"o:0;","ease":"Power2.easeInOut"}]'
+					data-x="center" data-hoffset="['-181','-181','-152','-181']"
+					data-y="center" data-voffset="['45','45','45','65']"
+					data-fontsize="['16','16','32','45']"
+					data-lineheight="['20','20','40','50']">Düğün fotoğrafı pozları, Düğün pozları</div>
+				<a class="tp-caption d-inline-flex align-items-center btn btn-dark font-weight-bold rounded ls-0 rs-parallaxlevel-2"
+					data-hash
+					data-hash-offset="95"
+					href="<?php echo base_url('iletisim');?>"
+					data-frames='[{"delay":1600,"speed":2000,"frame":"0","from":"x:-50%;opacity:0;","to":"o:1;","ease":"Power3.easeInOut"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;fb:0;","ease":"Power3.easeInOut"}]'
+					data-x="['center','center','center','center']" data-hoffset="['-5','-5','25','45']"
+					data-y="center" data-voffset="['125','125','210','275']"
+					data-paddingtop="['20','20','30','40']"
+					data-paddingbottom="['20','20','30','40']"
+					data-paddingleft="['68','68','68','95']"
+					data-paddingright="['15','15','15','25']"
+					data-fontsize="['16','16','23','45']"
+					data-lineheight="['20','20','26','50']">Detaylı bilgi için tıklayın <i class="fas fa-arrow-right ms-4 ps-3 me-2 text-4"></i></a>
+			</li>
+		</ul>
+	</div>
+</div>
+<?php endif; ?>
+<!--==============================
+    page-header
+============================== -->
+<section class="page-header page-header-modern page-header-background page-header-background-md overlay overlay-color-dark overlay-show overlay-op-7" style="background-image: url(<?php echo base_url('public/uploads/' . $setting['banner_about']); ?>);">
+	<div class="container">
+		<div class="row mt-5">
+			<div class="col-md-12 align-self-center p-static order-2 text-center">
+				<h1 class="text-9 font-weight-bold">İzmir <?php echo $category['category_name'];?></h1>
+				<span class="sub-title">Toplam <?php echo count($products);?> ürün bulunmaktadir.</span>
+			</div>
+			<div class="col-md-12 align-self-center order-1">
+				<ul class="breadcrumb breadcrumb-light d-block text-center">
+                    <li><a href="<?php echo base_url();?>">PLUS REKLAMCILIK</a></li>
+					<li class="active">Kategori Detayı</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</section>
+<!--==============================
+page-header end
+============================== -->
+<?php if($this->uri->segment('1').'/'.$this->uri->segment('2') === 'fotograf-video/4'):?>
+<section class="section section-height-2 bg-light border-0 m-0" id="whoweare">
+	<div class="container container-xl-custom">
+		<div class="row align-items-center">
+			<div class="col-lg-6 mb-5 mb-lg-0">
+				<span class="d-block text-color-primary custom-font-secondary font-weight-semibold text-8 appear-animation" data-appear-animation="maskUp">Plus Reklamcilik</span>
+				<div class="overflow-hidden mb-3">
+					<h2 class="text-color-dark font-weight-extra-bold text-11 negative-ls-1 line-height-3 mb-0 appear-animation" data-appear-animation="maskUp" data-appear-animation-delay="250">izmir</h2>
+				</div>
+				<p class="text-4 line-height-9 pe-5 pb-3 mb-4 appear-animation" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="450">
+				Firmamız 2012 yılından bu yana fotoğraf ve videografi alanında uzman eğitmen 
+		kişeler taraından sektöre hizmet vermektedir.Tanıtım videoları,havadan görüntüleme, etkinlik fotoğraf ve videoları
+		stüdyo fotoğrafçılığı, ürün çekimi, katalog çekimi ve düğün, özel gün olarak 
+		yurt içi ve yurtdışı birçok işe imza atmıştır.Alanında uzman belgeli genç ekip kadromuz ile 
+		daima enerjik ve en iyi şekilde hizmet vermeye devam ediyoruz.Sizle de tanışmak dileği ile...
+				</p>
+			</div>
+			<div class="col-lg-6">
+				<a href="<?php echo base_url();?>">
+					<img src="<?php echo base_url('public/uploads/plus2022-son-revize-logo.png'); ?>" class="img-fluid appear-animation" data-appear-animation="fadeInLeftShorter" data-appear-animation-delay="500" alt="" />
+				</a>
+			</div>
+		</div>
+	</div>
+</section>
+<?php endif; ?>
+<div class="container">
+	<hr>
+	<div class="masonry-loader masonry-loader-showing">
+		<div class="row products product-thumb-info-list" data-plugin-masonry data-plugin-options="{'layoutMode': 'fitRows'}">
+            <?php if(count($products) > 0):?>
+                <?php foreach ($products as $key => $row_product) :?>
+                    <div class="col-12 col-sm-6 col-lg-3">
+                        <div class="product mb-0">
+                            <div class="product-thumb-info border-0 mb-3">
+                                <a href="<?php echo base_url() . 'urun/'.$slug->url($category['category_name']).'/'.$slug->url($row_product['product_name']).'/'. $row_product['id'];?>">
+                                    <div class="product-thumb-info-image ">
+                                        <img alt="<?php echo $category['category_name'];?>" class="img-fluid" src="<?php echo base_url('public/uploads/product_photos/thumbnail/'.$row_product['thumbnail']);?>" width="250" height="250">
                                     </div>
-                                </div>
+                                </a>
                             </div>
-                        <?php endforeach; ?>
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <a href="<?php echo base_url($category['slug'].'/'.$category['category_id']);?>" class="d-block text-uppercase text-decoration-none text-color-default text-color-hover-primary line-height-1 text-0 mb-1"><?php echo $category['category_name'];?></a>
+                                    <h3 class="text-3-5 font-weight-medium font-alternative text-transform-none line-height-3 mb-0"><a href="<?php echo base_url() . 'product/'.$slug->url($category['category_name']).'/'.$slug->url($row_product['product_name']).'/'. $row_product['id'];?>" class="text-color-dark text-color-hover-primary"><?php echo $row_product['product_name']; ?></a></h3>
+                                </div>
+                                <a href="#" class="text-decoration-none text-color-default text-color-hover-dark text-4">#</a>
+                            </div>
+                            <div title="Rated 5 out of 5">
+                                <input type="text" class="d-none" value="5" title="" data-plugin-star-rating data-plugin-options="{'displayOnly': true, 'color': 'default', 'size':'xs'}">
+                            </div>
+                            <p class="price text-5 mb-3">
+                                <?php if(in_array($this->session->userdata('role'),['Superadmin1'])): ?>
+                                <span class="sale text-color-dark font-weight-semi-bold"><?php echo $row_product['product_price']; ?></span>
+                                <span class="amount"><?php echo $row_product['product_price_old']; ?></span>
+                                <?php endif;?>
+                            </p>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <div class="alert alert-info alert-lg mt-5 mb-5">
+			        <strong>Hay Aksi!</strong> Bu kategoride herhangi bir sey bulunmamaktadir.
+			    </div>
+            <?php endif;?>
+		</div>
+	</div>
 </div>
-
-<!-- Modal -->
-<div class="modal fade" id="cart_details_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="responseMessage"></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="cart-table table-responsive">
-                    <table class="table table-bordered mb-0">
-                        <thead>
-                            <tr>
-                                <th class="cart-col-image" scope="col" width="30%"><?php echo $this->lang->line('cart_popup_table_image'); ?></th>
-                                <th class="cart-col-productname" scope="col" width="55"><?php echo $this->lang->line('cart_popup_table_product'); ?></th>
-                                <th class="cart-col-price" scope="col" width="15%"><?php echo $this->lang->line('cart_popup_table_price'); ?></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="cartProductImage"></td>
-                                <td class="cartProductName align-middle"></td>
-                                <td class="cartProductPrice align-middle"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="modal-footer justify-content-between">
-                <a class="btn btn-warning" href="<?php echo base_url('shop'); ?>"><?php echo $this->lang->line('cart_popup_table_continue_shopping'); ?></a>
-                <a class="btn btn-primary" href="<?php echo base_url('shop/cart'); ?>"><?php echo $this->lang->line('cart_popup_table_checkout'); ?></a>
-            </div>
-        </div>
-    </div>
-</div>
+<?php if($this->uri->segment('1').'/'.$this->uri->segment('2') === 'fotograf-video/4'):?>
+<section class="section section-height-2 bg-light border-0 m-0" id="whoweare">
+	<div class="container container-xl-custom">
+		<div class="row align-items-center">
+			<div class="col-lg-12">
+				<h1>Düğün fotoğrafçılığı <small><a href="<?php echo base_url('galeri/dugun-fotografciligi');?>">tüm resimler</a></small></h1>
+			<!-- mansory start -->
+				<div class="masonry-loader masonry-loader-loaded">
+					<div class="masonry row g-0" data-plugin-masonry="" data-plugin-options="{'itemSelector': '.masonry-item'}" style="position: relative; height: 487.99px;">
+						<div class="lightbox mb-4" data-plugin-options="{'delegate': 'a', 'type': 'image', 'gallery': {'enabled': true}}">
+							<?php foreach($photo_gallery_wedding as $row_photo_gallery_item):?>
+							<div class="masonry-item no-default-style col-sm-3">
+								<?php if($row_photo_gallery_item['tag'] === 'wedding'):?>
+								<a href="<?php echo base_url('public/uploads/gallery/'.$row_photo_gallery_item['photo_name']);?>" class="img-thumbnail img-thumbnail-no-borders">
+									<span class="thumb-info thumb-info-centered-info thumb-info-no-borders">
+										<span class="thumb-info-wrapper" data-tag="<?php echo $row_photo_gallery_item['tag'];?>">
+											<img src="<?php echo base_url('public/uploads/gallery/'.$row_photo_gallery_item['photo_name']);?>" class="img-fluid float-start" alt="">
+										</span>
+									</span>
+								</a>
+								<?php endif;?>
+							</div>
+							<?php endforeach; ?>
+						</div>
+					</div>
+				<div class="bounce-loader"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>
+			<!-- mansory end -->
+			</div>
+			<div class="col-lg-12">
+				<h1>Ürünler <small><a href="<?php echo base_url('galeri/urunler');?>">tüm resimler</a></small></h1>
+			<!-- mansory start -->
+				<div class="masonry-loader masonry-loader-loaded">
+					<div class="masonry row g-0" data-plugin-masonry="" data-plugin-options="{'itemSelector': '.masonry-item'}" style="position: relative; height: 487.99px;">
+						<div class="mb-4" data-plugin-options="{'delegate': 'a', 'type': 'image', 'gallery': {'enabled': true}}">
+							<?php foreach($photo_gallery_products as $row_photo_gallery_item):?>
+							<div class="masonry-item no-default-style col-sm-3" data-itemid="<?php echo $row_photo_gallery_item['photo_id'];?>">
+								<a href="<?php echo base_url('galeri/urunler');?>" class="">
+									<span class="thumb-info thumb-info-centered-info thumb-info-no-borders">
+										<span class="thumb-info-wrapper" data-tag="<?php echo $row_photo_gallery_item['tag'];?>">
+											<img src="<?php echo base_url('public/uploads/gallery/'.$row_photo_gallery_item['photo_name']);?>" class="img-fluid float-start" alt="">
+										</span>
+									</span>
+								</a>
+							</div>
+							<?php endforeach; ?>
+						</div>
+					</div>
+				<div class="bounce-loader"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>
+			<!-- mansory end -->
+			</div>
+		</div>
+	</div>
+</section>
+<?php endif; ?>

@@ -156,21 +156,21 @@ class Setting extends CI_Controller
 
 		if (isset($_POST['form_footer_general'])) {
 			$form_data = array(
-				'footer_col1_title'            => $_POST['footer_col1_title'],
-				'footer_col2_title'            => $_POST['footer_col2_title'],
-				'footer_col3_title'            => $_POST['footer_col3_title'],
-				'footer_col4_title'            => $_POST['footer_col4_title'],
-				'footer_copyright'             => $_POST['footer_copyright'],
-				'footer_address'               => $_POST['footer_address'],
-				'footer_email'                 => $_POST['footer_email'],
-				'footer_phone'                 => $_POST['footer_phone'],
-				'footer_recent_news_item'      => $_POST['footer_recent_news_item'],
-				'footer_recent_portfolio_item' => $_POST['footer_recent_portfolio_item']
+				'footer_col1_title'            => $this->input->post('footer_col1_title'),
+				'footer_col2_title'            => $this->input->post('footer_col2_title'),
+				'footer_col3_title'            => $this->input->post('footer_col3_title'),
+				'footer_col4_title'            => $this->input->post('footer_col4_title'),
+				'footer_copyright'             => $this->input->post('footer_copyright'),
+				'footer_address'               => $this->input->post('footer_address'),
+				'footer_email'                 => $this->input->post('footer_email'),
+				'footer_phone'                 => $this->input->post('footer_phone'),
+				'footer_recent_news_item'      => $this->input->post('footer_recent_news_item'),
+				'footer_recent_portfolio_item' => $this->input->post('footer_recent_portfolio_item')
 			);
 			$this->Model_setting->update($form_data);
 			$success = 'Footer General Setting is updated successfully!';
-			$this->session->set_flashdata('success', $success);
-			redirect(base_url() . 'backend/admin/setting');
+			$form_data[] = 	array_push($form_data, array('csrf_fg' => $this->security->get_csrf_hash(), 'responseMessage' => $success));
+			exit( json_encode($form_data) );
 		}
 
 		if (isset($_POST['form_footer_background'])) {
@@ -220,8 +220,8 @@ class Setting extends CI_Controller
 			$this->Model_setting->update($form_data);
 
 			$success = 'Footer Zoho Live Chat is updated successfully!';
-			$this->session->set_flashdata('success', $success);
-			redirect(base_url() . 'backend/admin/setting');
+			$form_data[] = 	array_push($form_data, array('csrf_fg' => $this->security->get_csrf_hash(), 'responseMessage' => $success));
+			exit( json_encode($form_data) );
 		}
 
 		if (isset($_POST['form_footer_newsletter'])) {
@@ -230,8 +230,8 @@ class Setting extends CI_Controller
 			);
 			$this->Model_setting->update($form_data);
 			$success = 'Footer Newsletter Setting is updated successfully!';
-			$this->session->set_flashdata('success', $success);
-			redirect(base_url() . 'backend/admin/setting');
+			$form_data[] = 	array_push($form_data, array('csrf_fg' => $this->security->get_csrf_hash(), 'responseMessage' => $success));
+			exit( json_encode($form_data) );
 		}
 
 		if (isset($_POST['form_footer_cta'])) {
@@ -242,8 +242,8 @@ class Setting extends CI_Controller
 			);
 			$this->Model_setting->update($form_data);
 			$success = 'Footer Call to Action Setting is updated successfully!';
-			$this->session->set_flashdata('success', $success);
-			redirect(base_url() . 'backend/admin/setting');
+			$form_data[] = 	array_push($form_data, array('csrf_fg' => $this->security->get_csrf_hash(), 'responseMessage' => $success));
+			exit( json_encode($form_data) );
 		}
 
 		if (isset($_POST['form_footer_cta_background'])) {
@@ -822,6 +822,39 @@ class Setting extends CI_Controller
 				);
 				$this->Model_setting->update($form_data);
 				$success = 'Portfolio Page Banner is updated successfully!';
+				$this->session->set_flashdata('success', $success);
+				redirect(base_url() . 'backend/admin/setting');
+			} else {
+				$this->session->set_flashdata('error', $error);
+				redirect(base_url() . 'backend/admin/setting');
+			}
+		}
+		
+		if (isset($_POST['form_banner_blog'])) {
+			$valid = 1;
+			$path = $_FILES['photo']['name'];
+			$path_tmp = $_FILES['photo']['tmp_name'];
+			if ($path != '') {
+				$ext = pathinfo($path, PATHINFO_EXTENSION);
+				$file_name = basename($path, '.' . $ext);
+				$ext_check = $this->Model_common->extension_check_photo($ext);
+				if ($ext_check == FALSE) {
+					$valid = 0;
+					$error = 'You must have to upload jpg, jpeg, gif or png file<br>';
+				}
+			} else {
+				$valid = 0;
+				$error = 'You must have to select a photo<br>';
+			}
+			if ($valid == 1) {
+				unlink('./public/uploads/' . $data['setting']['banner_blog']);
+				$final_name = 'banner_blog' . '.' . $ext;
+				move_uploaded_file($path_tmp, './public/uploads/' . $final_name);
+				$form_data = array(
+					'banner_blog' => $final_name
+				);
+				$this->Model_setting->update($form_data);
+				$success = 'Blog Page Banner is updated successfully!';
 				$this->session->set_flashdata('success', $success);
 				redirect(base_url() . 'backend/admin/setting');
 			} else {

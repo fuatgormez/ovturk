@@ -13,24 +13,19 @@
 	<div class="row">
 		<div class="col-md-12">
 
-			<?php
-	        if($this->session->flashdata('error')) {
-	            ?>
+			<?php if($this->session->flashdata('error')) :?>
 				<div class="callout callout-danger">
 					<p><?php echo $this->session->flashdata('error'); ?></p>
 				</div>
-	            <?php
-	        }
-	        if($this->session->flashdata('success')) {
-	            ?>
+	        <?php endif;?>
+
+	        <?php if($this->session->flashdata('success')) :?>
 				<div class="callout callout-success">
 					<p><?php echo $this->session->flashdata('success'); ?></p>
 				</div>
-	            <?php
-	        }
-	        ?>
+	        <?php endif;?>
 			
-			<?php echo form_open_multipart(base_url().'backend/admin/slider/add',array('class' => 'form-horizontal'));?>
+			<?php echo form_open_multipart(base_url('backend/admin/slider/add'),array('class' => 'form-horizontal'));?>
 				<div class="box box-info">
 					<div class="box-body">
 						<div class="form-group">
@@ -87,7 +82,7 @@
 						<div class="form-group">
 							<label for="" class="col-sm-2 control-label"></label>
 							<div class="col-sm-6">
-								<button type="submit" class="btn btn-success pull-left" name="form1">Submit</button>
+								<button type="submit" class="btn btn-success pull-left" name="slider">Submit</button>
 							</div>
 						</div>
 					</div>

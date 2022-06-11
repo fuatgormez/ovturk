@@ -62,6 +62,11 @@ class Model_portfolio extends CI_Model
         $this->db->update('tbl_portfolio',$data);
     }
 
+    function update_photo($id,$data) {
+        $this->db->where('id',$id);
+        $this->db->update('tbl_portfolio_photo',$data);
+    }
+
     function delete($id)
     {
         $this->db->where('id',$id);

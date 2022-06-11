@@ -52,8 +52,8 @@ class Slug
             'Ş' => 'S', 'İ' => 'I', 'Ç' => 'C', 'Ü' => 'U', 'Ö' => 'O', 'Ğ' => 'G',
             'ş' => 's', 'ı' => 'i', 'ç' => 'c', 'ü' => 'u', 'ö' => 'o', 'ğ' => 'g',
             // Deutsch
-            'Ä' => 'AE', 'Ö' => 'OE', 'Ü' => 'UE',
-            'ä' => 'ae', 'ö' => 'oe', 'ü' => 'ue',
+            // 'Ä' => 'AE', 'Ö' => 'OE', 'Ü' => 'UE',
+            // 'ä' => 'ae', 'ö' => 'oe', 'ü' => 'ue',
 
         );
         $str = preg_replace(array_keys($options['replacements']), $options['replacements'], $str);

@@ -41,13 +41,14 @@ class Slider extends CI_Controller
 
 		$error = '';
 		$success = '';
-
-		if(isset($_POST['form1'])) {
-
+		
+		
+		if(isset($_POST['slider'])) {
 			$valid = 1;
 
             $path = $_FILES['photo']['name'];
 		    $path_tmp = $_FILES['photo']['tmp_name'];
+
 
 		    if($path!='') {
 		        $ext = pathinfo( $path, PATHINFO_EXTENSION );
@@ -55,7 +56,7 @@ class Slider extends CI_Controller
 		        $ext_check = $this->Model_common->extension_check_photo($ext);
 		        if($ext_check == FALSE) {
 		            $valid = 0;
-		            $error = 'You must have to upload jpg, jpeg, gif or png file for featured photo<br>';
+		            $error = 'You must have to upload jpg, jpeg, gif, png or svg file for featured photo<br>';
 		        }
 		    } else {
 		    	$valid = 0;
@@ -70,27 +71,26 @@ class Slider extends CI_Controller
 		        }
 
 		        $final_name = 'slider-'.$ai_id.'.'.$ext;
-		        move_uploaded_file( $path_tmp, './public/uploads/'.$final_name );
+		        move_uploaded_file( $path_tmp, './public/uploads/slider/'.$final_name );
 
 		        $form_data = array(
 					'photo'        => $final_name,
-					'heading'      => $_POST['heading'],
-					'content'      => $_POST['content'],
-					'button1_text' => $_POST['button1_text'],
-					'button1_url'  => $_POST['button1_url'],
-					'button2_text' => $_POST['button2_text'],
-					'button2_url'  => $_POST['button2_url'],
-					'position'     => $_POST['position']
+					'heading'      => $this->input->post('heading'),
+					'content'      => $this->input->post('content'),
+					'button1_text' => $this->input->post('button1_text'),
+					'button1_url'  => $this->input->post('button1_url'),
+					'button2_text' => $this->input->post('button2_text'),
+					'button2_url'  => $this->input->post('button2_url'),
+					'position'     => $this->input->post('position')
 	            );
 	            $this->Model_slider->add($form_data);
 
 	            $success = 'Slider is added successfully!';
 	            $this->session->set_flashdata('success',$success);
-	            redirect(base_url().'backend/admin/slider');
-		    }
-		    else {
+	            redirect(base_url('backend/admin/slider'));
+		    } else {
 		    	$this->session->set_flashdata('error',$error);
-	            redirect(base_url().'backend/admin/slider/add');
+	            redirect(base_url('backend/admin/slider/add'));
 		    }
         } else {
             $this->load->view('backend/admin/view_header',$data);
@@ -114,7 +114,7 @@ class Slider extends CI_Controller
 		$error = '';
 		$success = '';
 
-		if(isset($_POST['form1'])) 
+		if(isset($_POST['slider'])) 
 		{
 			$valid = 1;
 
@@ -127,7 +127,7 @@ class Slider extends CI_Controller
 		        $ext_check = $this->Model_common->extension_check_photo($ext);
 		        if($ext_check == FALSE) {
 		            $valid = 0;
-		            $data['error'] = 'You must have to upload jpg, jpeg, gif or png file for featured photo<br>';
+		            $data['error'] = 'You must have to upload jpg, jpeg, gif, png or svg file for featured photo<br>';
 		        }
 		    }
 
@@ -142,17 +142,18 @@ class Slider extends CI_Controller
                     'button1_url'  => $this->input->post('button1_url'),
                     'button2_text' => $this->input->post('button2_text'),
                     'button2_url'  => $this->input->post('button2_url'),
-                    'position'     => $this->input->post('position')
+                    'status'     => $this->input->post('status'),
+                    'row'     => $this->input->post('row')
                 );
 
 		    	if($path == '') {
 		            $this->Model_slider->update($id,$form_data);
 				}
 				else {
-					unlink('./public/uploads/'.$data['slider']['photo']);
+					unlink('./public/uploads/slider/'.$data['slider']['photo']);
 
 					$final_name = 'slider-'.$id.'.'.$ext;
-		        	move_uploaded_file( $path_tmp, './public/uploads/'.$final_name );
+		        	move_uploaded_file( $path_tmp, './public/uploads/slider/'.$final_name );
 
 		        	$form_data['photo'] = $final_name;
 
@@ -187,7 +188,7 @@ class Slider extends CI_Controller
 
         $data['slider'] = $this->Model_slider->getData($id);
         if($data['slider']) {
-            unlink('./public/uploads/'.$data['slider']['photo']);
+            unlink('./public/uploads/slider/'.$data['slider']['photo']);
         }
 
         $this->Model_slider->delete($id);

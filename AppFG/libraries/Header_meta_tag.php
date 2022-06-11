@@ -28,8 +28,8 @@ class Header_meta_tag
 
 		
 		if ($class_name == 'shop') {
-			echo '<meta name="description" content="IRISPICTURE">';
-			echo '<meta name="keywords" content="irisshot, irispohoto, irispicture">';
+			echo '<meta name="description" content="Plusreklamcilik">';
+			echo '<meta name="keywords" content="Plusreklamcilik, izmir matbaa, izmir tabela">';
 			echo '<title>SHOP</title>';
 		} else if ($class_name == 'home') {
 			echo '<meta name="description" content="' . $page_home['meta_description'] . '">';
@@ -153,9 +153,9 @@ class Header_meta_tag
 				echo '<meta property="og:image" content="' . base_url() . 'public/uploads/' . $og_photo . '">';
 			}
 		} else {
-			echo '<meta name="description" content="IRISPICTURE">';
-			echo '<meta name="keywords" content="irisshot, irispohoto, irispicture">';
-			echo '<title>IRISPICTURE</title>';
+			echo '<meta name="description" content="PLUSREKLAMCILILIK">';
+			echo '<meta name="keywords" content="PLUSREKLAMCILIK, izmir matbaa, izmir tabela">';
+			echo '<title>PLUSREKLAMCILIK</title>';
 		}
 	}
 

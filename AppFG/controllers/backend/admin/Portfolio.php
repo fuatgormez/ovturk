@@ -12,6 +12,9 @@ class Portfolio extends CI_Controller
 		}
 		$this->load->model('backend/admin/Model_common');
 		$this->load->model('backend/admin/Model_portfolio');
+		$this->load->model('backend/admin/Model_tag');
+
+		$this->load->library('slug');
 
 		$data['setting'] = $this->Model_common->get_setting_data();
 		
@@ -79,10 +82,11 @@ class Portfolio extends CI_Controller
 		        }
 
 		        $final_name = 'portfolio-'.$ai_id.'.'.$ext;
-		        move_uploaded_file( $path_tmp, './public/uploads/'.$final_name );
+		        move_uploaded_file( $path_tmp, './public/uploads/portfolio_photos/'.$final_name );
 
 		        $form_data = array(
 					'name'             => $_POST['name'],
+					'slug'             => $this->slug->url($_POST['name']),
 					'short_content'    => $_POST['short_content'],
 					'content'          => $_POST['content'],
 					'client_name'      => $_POST['client_name'],
@@ -96,7 +100,8 @@ class Portfolio extends CI_Controller
 					'photo'            => $final_name,
 					'meta_title'       => $_POST['meta_title'],
 					'meta_keyword'     => $_POST['meta_keyword'],
-					'meta_description' => $_POST['meta_description']
+					'meta_description' => $_POST['meta_description'],
+					'tag' => json_encode($this->input->post('tag'))
 	            );
 	            $this->Model_portfolio->add($form_data);
 
@@ -157,6 +162,7 @@ class Portfolio extends CI_Controller
 		    }            
         } else {
             $data['all_photo_category'] = $this->Model_portfolio->get_all_photo_category();
+			$data['tags'] = $this->Model_tag->show();
             $this->load->view('backend/admin/view_header',$data);
 			$this->load->view('backend/admin/view_portfolio_add',$data);
 			$this->load->view('backend/admin/view_footer');
@@ -213,6 +219,7 @@ class Portfolio extends CI_Controller
 
                 $form_data = array(
                     'name'             => $_POST['name'],
+                    'slug'             => $this->slug->url($_POST['name']),
                     'short_content'    => $_POST['short_content'],
                     'content'          => $_POST['content'],
                     'client_name'      => $_POST['client_name'],
@@ -225,17 +232,18 @@ class Portfolio extends CI_Controller
                     'category_id'      => $_POST['category_id'],
                     'meta_title'       => $_POST['meta_title'],
                     'meta_keyword'     => $_POST['meta_keyword'],
-                    'meta_description' => $_POST['meta_description']
+                    'meta_description' => $_POST['meta_description'],
+					'tag' => json_encode($this->input->post('tag'))
                 );
 
 		    	if($path == '') {
 		            $this->Model_portfolio->update($id,$form_data);
 				}
 				else {
-					unlink('./public/uploads/'.$data['portfolio']['photo']);
+					unlink('./public/uploads/portfolio_photos/'.$data['portfolio']['photo']);
 
 					$final_name = 'portfolio-'.$id.'.'.$ext;
-		        	move_uploaded_file( $path_tmp, './public/uploads/'.$final_name );
+		        	move_uploaded_file( $path_tmp, './public/uploads/portfolio_photos/'.$final_name );
 
 		        	$form_data['photo'] = $final_name;
 
@@ -300,6 +308,7 @@ class Portfolio extends CI_Controller
 			$data['portfolio'] = $this->Model_portfolio->getData($id);
 			$data['all_photo_category'] = $this->Model_portfolio->get_all_photo_category();
 			$data['all_photos_by_id'] = $this->Model_portfolio->get_all_photos_by_category_id($id);
+			$data['tags'] = $this->Model_tag->show();
 	       	$this->load->view('backend/admin/view_header',$data);
 			$this->load->view('backend/admin/view_portfolio_edit',$data);
 			$this->load->view('backend/admin/view_footer');
@@ -317,7 +326,7 @@ class Portfolio extends CI_Controller
 
         $data['portfolio'] = $this->Model_portfolio->getData($id);
         if($data['portfolio']) {
-            unlink('./public/uploads/'.$data['portfolio']['photo']);
+            unlink('./public/uploads/portfolio_photos/'.$data['portfolio']['photo']);
         }
 
         $portfolio_photos = $this->Model_portfolio->get_all_photos_by_category_id($id);
@@ -342,6 +351,14 @@ class Portfolio extends CI_Controller
 
   		redirect(base_url().'backend/admin/portfolio/edit/'.$portfolio_id);
 
+    }
+    
+	public function single_photo_edit() {
+  		exit(json_encode($this->Model_portfolio->portfolio_photo_by_id($this->input->post('photo_id'))));
+    }
+	
+	public function single_photo_update() {
+  		exit(json_encode($this->Model_portfolio->update_photo($this->input->post('photo_id'),array('title' => $this->input->post('photo_title')))));
     }
 
 }

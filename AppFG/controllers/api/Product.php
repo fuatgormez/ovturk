@@ -17,6 +17,8 @@ class Product extends CI_Controller
 
 	public function all_product($land_id, $lang)
 	{
+        // header('Access-Control-Allow-Origin: *');
+
 		exit(json_encode($this->Model_shop->all_product($land_id, $lang)));
 	}
 	
@@ -48,7 +50,7 @@ class Product extends CI_Controller
         $title = $dom->createElement("title");
         $root->appendChild($title);
 
-        $titleText = $dom->createTextNode("IRISPICTURE");
+        $titleText = $dom->createTextNode("PLUS REKLAM");
         $title->appendChild($titleText);
 
         $link = $dom->createElement("link");
@@ -60,7 +62,7 @@ class Product extends CI_Controller
         $description = $dom->createElement("description");
         $root->appendChild($description);
 
-        $descriptionText = $dom->createTextNode("Dein IRIS, Dein FOTO");
+        $descriptionText = $dom->createTextNode("Plus Reklam Izmir");
         $description->appendChild($descriptionText);
 
         $products = $this->Model_shop->xml_all_product($land_id, $lang_code);

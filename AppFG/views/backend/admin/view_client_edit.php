@@ -47,13 +47,13 @@
 						<div class="form-group">
 							<label for="" class="col-sm-2 control-label">Existing Photo</label>
 							<div class="col-sm-9" style="padding-top:5px">
-								<img src="<?php echo base_url(); ?>public/uploads/<?php echo $client['photo']; ?>" alt="Slider Photo" style="width:180px;">
+								<img src="<?php echo base_url(); ?>public/uploads/client/<?php echo $client['photo']; ?>" alt="Client Photo" style="width:180px;">
 							</div>
 						</div>
 						<div class="form-group">
 							<label for="" class="col-sm-2 control-label">Photo </label>
 							<div class="col-sm-6" style="padding-top:5px">
-								<input type="file" name="photo">(Only jpg, jpeg, gif and png are allowed)
+								<input type="file" name="photo">(Only jpg, jpeg, gif, png, webp and svg are allowed)
 							</div>
 						</div>
 						<div class="form-group">

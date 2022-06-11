@@ -12,30 +12,25 @@
 	<div class="row">
 		<div class="col-md-12">
 
-			<?php
-	        if($this->session->flashdata('error')) {
-	            ?>
+			<?php if($this->session->flashdata('error')) :?>
 				<div class="callout callout-danger">
 					<p><?php echo $this->session->flashdata('error'); ?></p>
 				</div>
-	            <?php
-	        }
-	        if($this->session->flashdata('success')) {
-	            ?>
+	        <?php endif;?>
+
+	        <?php if($this->session->flashdata('success')) :?>
 				<div class="callout callout-success">
 					<p><?php echo $this->session->flashdata('success'); ?></p>
 				</div>
-	            <?php
-	        }
-	        ?>
+	        <?php endif;?>
 
-			<?php echo form_open_multipart(base_url().'backend/admin/slider/edit/'.$slider['id'], array('class' => 'form-horizontal'));?>
+			<?php echo form_open_multipart(base_url('backend/admin/slider/edit/'.$slider['id']), array('class' => 'form-horizontal'));?>
 				<div class="box box-info">
 					<div class="box-body">
 						<div class="form-group">
 							<label for="" class="col-sm-2 control-label">Existing Photo</label>
 							<div class="col-sm-9" style="padding-top:5px">
-								<img src="<?php echo base_url(); ?>public/uploads/<?php echo $slider['photo']; ?>" alt="Slider Photo" style="width:400px;">
+								<img src="<?php echo base_url(); ?>public/uploads/slider/<?php echo $slider['photo'].'?v='.sha1(time()); ?>" alt="Slider Photo" style="width:400px;">
 							</div>
 						</div>
 						<div class="form-group">
@@ -89,10 +84,25 @@
 								</select>
 							</div>
 						</div>
+						<h3 class="seo-info">Status & Row</h3>
+						<div class="form-group">
+							<label for="" class="col-sm-2 control-label">Status</label>
+							<div class="col-sm-2">
+                                <select name="status" class="form-control select2" style="width:auto;">
+                                    <option value="Show" <?php if($slider['status'] == 'Show') {echo 'selected';} ?>>Show</option>
+                                    <option value="Hide" <?php if($slider['status'] == 'Hide') {echo 'selected';} ?>>Hide</option>
+                                </select>
+							</div>
+
+                            <label for="" class="col-sm-2 control-label">Row</label>
+							<div class="col-sm-2">
+                                <input type="text" class="form-control" name="row" value="<?php echo $slider['row'];?>">
+							</div>
+						</div>
 						<div class="form-group">
 							<label for="" class="col-sm-2 control-label"></label>
 							<div class="col-sm-6">
-								<button type="submit" class="btn btn-success pull-left" name="form1">Submit</button>
+								<button type="submit" class="btn btn-success pull-left" name="slider">Submit</button>
 							</div>
 						</div>
 					</div>

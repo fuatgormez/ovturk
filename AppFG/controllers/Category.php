@@ -31,7 +31,7 @@ class Category extends CI_Controller {
 		$data['setting'] = $this->Model_common->all_setting();
 		$data['page_home'] = $this->Model_common->all_page_home();
 		$data['comment'] = $this->Model_common->all_comment();
-		$data['social'] = $this->Model_common->all_social();
+		$data['socials'] = $this->Model_common->all_social();
 		$data['all_news'] = $this->Model_common->all_news();
 		$data['all_categories'] = $this->Model_common->all_categories();
         $data['services'] = $this->Model_service->all_service();

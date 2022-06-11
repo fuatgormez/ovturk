@@ -14,6 +14,12 @@ class Model_common extends CI_Model
         $query = $this->db->query("SELECT * FROM tbl_settings_shop WHERE id=1");
         return $query->first_row('array');
     }
+    
+    public function all_tag()
+    {
+        $query = $this->db->query("SELECT * FROM tbl_tag WHERE status=?",['Show']);
+        return $query->result_array();
+    }
 
     public function get_send_email($lang_code = "de", $message_type="")
     {
@@ -141,6 +147,12 @@ class Model_common extends CI_Model
         return $query->first_row('array');
     }
 
+    public function all_page_blog()
+    {
+        $query = $this->db->query("SELECT * FROM tbl_page_blog WHERE id=1");
+        return $query->first_row('array');
+    }
+    
     public function all_page_portfolio()
     {
         $query = $this->db->query("SELECT * FROM tbl_page_portfolio WHERE id=1");

@@ -22,20 +22,30 @@ class Sitemap extends CI_Controller
         $this->load->library('set_store_url');
         $this->lang->load('file', $this->session->userdata('site_language') ?? $this->session->userdata('store_language'));
 
+        
+        // print_r($this->products);
+        // exit;
+
+    }
+
+    public function index()
+    {
         $this->store_lang_data =  $this->session->userdata('store_language');
         $this->land_id =  $this->session->userdata('land_id');
         $this->store_id =  $this->session->userdata('store_id');
 
         $this->products = $this->Model_shopping_cart->all_product($this->store_lang_data, $this->land_id);
         $this->product_categories = $this->Model_shopping_cart->all_product_category($this->store_lang_data);
-        print_r($this->products);
-        exit;
 
-    }
+        $data['items'] = $this->products;
 
-    public function index()
-    {
-        echo "sitemaps";
+        // echo '<pre>';
+        // print_r($this->products);
+        // exit;
+
+
+        $this->load->view('view_sitemap', $data);
+
     }
 
     public function xml()
@@ -49,6 +59,13 @@ class Sitemap extends CI_Controller
         // $this->Model_sitemap->add(base_url().'contact', date('Y-m-d', time()), 'monthly', 0.5);
         // $this->Model_sitemap->add(base_url().'service', date('Y-m-d', time()), 'monthly', 1);
 
+        $this->store_lang_data =  $this->session->userdata('store_language');
+        $this->land_id =  $this->session->userdata('land_id');
+        $this->store_id =  $this->session->userdata('store_id');
+
+        $this->products = $this->Model_shopping_cart->all_product($this->store_lang_data, $this->land_id);
+        $this->product_categories = $this->Model_shopping_cart->all_product_category($this->store_lang_data);
+        
         $date = date('c',time());
 
         // print_r($this->products);exit;

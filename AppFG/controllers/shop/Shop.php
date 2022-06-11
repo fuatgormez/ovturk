@@ -30,7 +30,7 @@ class Shop extends CI_Controller {
         $data['page_home'] = $this->Model_common->all_page_home();
         $data['page_about'] = $this->Model_common->all_page_about();
         $data['comment'] = $this->Model_common->all_comment();
-        $data['social'] = $this->Model_common->all_social();
+        $data['socials'] = $this->Model_common->all_social();
 
         //$check_category     = $this->Model_shopping_cart->all_product_category($store_lang_data);
         //$check_products     = $this->Model_shopping_cart->all_product($store_lang_data);
@@ -45,21 +45,6 @@ class Shop extends CI_Controller {
         // $data['products'] = $this->Model_shopping_cart->all_product($store_lang_data,$store_id);
         // $data['product_categories'] = $this->Model_shopping_cart->all_product_category($store_lang_data,$store_id);
         $data['products'] = $this->Model_shopping_cart->all_product($store_lang_data, $land_id);
-
-        if (base_url() === "https://www.irispicture.com/" || base_url() === "https://www.youririsfoto.nl/" || base_url() === "https://www.youririsfoto.com/" || base_url() === "https://www.youririsfoto.be/iptal") {
-            $this->facebook_pixel->ViewContent(
-            // $pixel_id, $token
-            $this->Model_common->all_setting()['facebook_init'],
-            $this->Model_common->all_setting()['facebook_access_token']
-            );
-        }
-
-		//bu kisim sayfada satisi yapilmayacak urunleri tobiasin gormesini saglamak extra kendisi musterileri icin siparis geciyor
-		if (base_url() === "https://irispicture.ch/") {
-			if(in_array($this->session->userdata('role'), ['Superadmin','Admin'])){
-				$data['product_categories'] = $this->Model_shopping_cart->all_product_category_only_staff($store_lang_data);
-			}
-		}
 		
         $data['product_categories'] = $this->Model_shopping_cart->all_product_category($store_lang_data);
         $data['product_category_photo'] = $this->Model_shopping_cart->all_product_category_photo();
@@ -105,13 +90,6 @@ class Shop extends CI_Controller {
         // $data['product_categories'] = $this->Model_shopping_cart->all_product_category($store_lang_data,$store_id);
         $data['products'] = $this->Model_shopping_cart->all_product_action($store_lang_data, $land_id);
 
-		if (base_url() === "https://www.irispicture.com/" || base_url() === "https://www.youririsfoto.nl/" || base_url() === "https://www.youririsfoto.com/" || base_url() === "https://www.youririsfoto.be/iptal") {
-            $this->facebook_pixel->ViewContent(
-            // $pixel_id, $token
-            $this->Model_common->all_setting()['facebook_init'],
-            $this->Model_common->all_setting()['facebook_access_token']
-            );
-        }
 		
         $data['product_categories'] = $this->Model_shopping_cart->all_product_category_action($store_lang_data);
         $data['product_category_photo'] = $this->Model_shopping_cart->all_product_category_photo();

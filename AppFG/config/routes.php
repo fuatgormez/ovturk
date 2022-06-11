@@ -63,13 +63,26 @@ $route['service/(:num)/(:any)'] = 'service/view/$1/$2';
 //$1 => categoy $2 => product name $3 => product_id
 // $route['product/(:any)/(:any)/(:num)'] = 'shop/product/index/$1/$2/$3';
 $route['shop'] = 'shop/shop';
+$route['yazilar'] = 'blog';
+$route['yazilar/resimler'] = 'blog/gallery';
+$route['yazi/(:any)/(:num)'] = 'blog/view/$1/$2';
+$route['portfoylerimiz'] = 'portfolio';
+$route['portfoylerimiz/resimler'] = 'portfolio/gallery';
+$route['portfoy/(:any)/(:num)'] = 'portfolio/view/$1/$2';
 $route['product/(:any)/(:any)/(:num)'] = 'shop/product/index/$1/$2/$3';
+$route['urun/(:any)/(:any)/(:num)'] = 'shop/product/index/$1/$2/$3';
 $route['(:any)/(:num)'] = 'shop/product/category/$1/$2';
-$route['shop/new-year-action/2022'] = 'shop/shop/new_year_action';
 
 $route['backend/admin'] = 'backend/admin/login';
 
-
+$route['tag/(:any)'] = 'tag/detail/$1';
+$route['etiket/(:any)'] = 'tag/detail/$1';
+$route['etiketler'] = 'tag';
+$route['etiket'] = 'tag';
+$route['resimlerimiz'] = 'photo_gallery';
+$route['galeri'] = 'photo_gallery';
+$route['hakkimizda'] = 'about';
+$route['iletisim'] = 'contact';
 
 $route['sitemap.xml'] = 'sitemap/xml';
 

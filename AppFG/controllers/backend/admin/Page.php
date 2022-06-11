@@ -45,6 +45,7 @@ class Page extends CI_Controller
 		$data['page_privacy'] = $this->Model_page->show_privacy();
 		$data['page_team'] = $this->Model_page->show_team();
 		$data['page_portfolio'] = $this->Model_page->show_portfolio();
+		$data['page_blog'] = $this->Model_page->show_blog();
 		$data['page_event'] = $this->Model_page->show_event();
 
 		$this->load->view('backend/admin/view_header', $data);
@@ -1056,6 +1057,22 @@ class Page extends CI_Controller
 			);
 			$this->Model_page->update_portfolio($form_data);
 			$success = 'Portfolio Page Setting is updated successfully!';
+			$this->session->set_flashdata('success', $success);
+
+			$form_data[] = 	array_push($form_data, array('csrf_fg' => $this->security->get_csrf_hash(), 'responseMessage' => $success));
+
+			echo json_encode($form_data);
+		}
+		
+		if (isset($_POST['form_blog'])) {
+			$form_data = array(
+				'blog_heading' => $this->input->post('blog_heading'),
+				'mt_blog'      => $this->input->post('mt_blog'),
+				'mk_blog'      => $this->input->post('mk_blog'),
+				'md_blog'      => $this->input->post('md_blog')
+			);
+			$this->Model_page->update_blog($form_data);
+			$success = 'Blog Page Setting is updated successfully!';
 			$this->session->set_flashdata('success', $success);
 
 			$form_data[] = 	array_push($form_data, array('csrf_fg' => $this->security->get_csrf_hash(), 'responseMessage' => $success));

@@ -165,7 +165,7 @@ $segment_4 = $this->uri->segment('4');
                                     <?php if ($this->session->userdata('photo') == '') : ?>
                                         <img style="max-width: 40px;margin-top: -10px;" src="<?php echo base_url(); ?>public/backend/admin/img/no-photo.jpg">
                                     <?php else : ?>
-                                        <img style="max-width: 40px;margin-top: -10px;" class="img-responsive" src="<?php echo base_url(); ?>public/uploads/<?php echo $this->session->userdata('photo'); ?>">
+                                        <img style="max-width: 40px;margin-top: -10px;" class="img-responsive" src="<?php echo base_url(); ?>public/uploads/user/<?php echo $this->session->userdata('photo'); ?>">
                                     <?php endif; ?>
 
                                     <span class="hidden-xs"><?php echo $this->session->userdata('full_name'); ?></span>
@@ -213,17 +213,8 @@ $segment_4 = $this->uri->segment('4');
                             </a>
                         </li>
 
-                        <?php if (in_array($this->session->userdata('role'), ['Superadmin'])) : ?>
-                            <li class="treeview <?php if (($class_name == 'machine_tracking/device')) {
-                                                    echo 'active';
-                                                } ?>" id="7">
-                                <a href="<?php echo base_url(); ?>backend/machine_tracking/device">
-                                    <i class="fa fa-history"></i> <span>M.T Device</span>
-                                </a>
-                            </li>
-                        <?php endif; ?>
 
-                        <?php if (in_array($this->session->userdata('id'), ["1","15","16"])) : ?>
+                        <?php if (in_array($this->session->userdata('role'), ['Superadmin'])) : ?>
                             <li class="treeview <?php if (($class_name == 'statistic')) {
                                                     echo 'active';
                                                 } ?>" id="9">
@@ -234,7 +225,7 @@ $segment_4 = $this->uri->segment('4');
                             </li>
                         <?php endif; ?>
 
-                        <?php if (in_array($this->session->userdata('role'), ['Superadmin', 'Admin'])) : ?>
+                        <?php if (in_array($this->session->userdata('role'), ['Superadmin'])) : ?>
                             <li class="treeview <?php if (($class_name == 'ads_log')) {
                                                     echo 'active';
                                                 } ?>" id="8">
@@ -244,7 +235,7 @@ $segment_4 = $this->uri->segment('4');
                             </li>
                         <?php endif; ?>
                         
-                        <?php if (in_array($this->session->userdata('role'), ['Superadmin', 'Admin', 'Meister', 'Production', 'Seller', 'Designer'])) : ?>
+                        <?php if (in_array($this->session->userdata('role'), ['Superadmin', 'Admin'])) : ?>
                             <li class="treeview <?php if (($class_name == 'ticket')) {
                                                     echo 'active';
                                                 } ?>" id="2">
@@ -258,7 +249,7 @@ $segment_4 = $this->uri->segment('4');
                             </li>
                         <?php endif; ?>
 
-                        <?php if (in_array($this->session->userdata('role'), ['Superadmin', 'Admin', 'Meister', 'Ads'])) : ?>
+                        <?php if (in_array($this->session->userdata('role'), ['Superadmin', 'Admin'])) : ?>
                             <li class="treeview <?php if (($class_name == 'product') || ($class_name == 'product_category')) {
                                                     echo 'active';
                                                 } ?>" id="7">
@@ -270,6 +261,7 @@ $segment_4 = $this->uri->segment('4');
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
+                                    <li><a href="<?php echo base_url(); ?>backend/admin/tag"><i class="fa fa-circle-o"></i> Tag</a></li>
                                     <li><a href="<?php echo base_url(); ?>backend/shop/product_category"><i class="fa fa-circle-o"></i> Product Category</a></li>
                                     <li><a href="<?php echo base_url(); ?>backend/shop/product"><i class="fa fa-circle-o"></i>
                                             Product</a></li>
@@ -278,8 +270,26 @@ $segment_4 = $this->uri->segment('4');
                                 </ul>
                             </li>
                         <?php endif; ?>
+                        
+                        <?php if (in_array($this->session->userdata('role'), ['Superadmin', 'Admin'])) : ?>
+                            <li class="treeview <?php if (($class_name == 'blog') || ($class_name == 'blog_category')) {
+                                                    echo 'active';
+                                                } ?>" id="9">
+                                <a href="#">
+                                    <i class="fa fa-bars"></i>
+                                    <span>Blog</span>
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="<?php echo base_url(); ?>backend/admin/blog_category"><i class="fa fa-circle-o"></i>Blog Category</a></li>
+                                    <li><a href="<?php echo base_url(); ?>backend/admin/blog"><i class="fa fa-circle-o"></i>Blog</a></li>
+                                </ul>
+                            </li>
+                        <?php endif; ?>
 
-                        <?php if (in_array($this->session->userdata('role'), ['Superadmin', 'Admin', 'Meister', 'Production', 'Designer'])) : ?>
+                        <?php if (in_array($this->session->userdata('role'), ['Superadmin'])) : ?>
                             <li class="treeview <?php if (($class_name == 'order')) {
                                                     echo 'active';
                                                 } ?>" id="7">
@@ -292,14 +302,14 @@ $segment_4 = $this->uri->segment('4');
                                 </a>
                                 <ul class="treeview-menu">
                                     <li><a href="<?php echo base_url('backend/shop/order'); ?>"><i class="fa fa-circle-o"></i> Order</a></li>
-                                    <?php if (in_array($this->session->userdata('id'), [1,15,16,])) : ?>
+                                    <?php if (in_array($this->session->userdata('role'), ['Superadmin'])) : ?>
                                         <li><a href="<?php echo base_url('backend/shop/order/export_order_data'); ?>"><i class="fa fa-circle-o"></i>Get All Data</a></li>
                                     <?php endif;?>
                                 </ul>
                             </li>
                         <?php endif; ?>
 
-                        <?php if (in_array($this->session->userdata('role'), ['Superadmin', 'Admin'])) : ?>
+                        <?php if (in_array($this->session->userdata('role'), ['Superadmin'])) : ?>
                             <li class="treeview <?php if (($class_name == 'mollie') || ($class_name == 'mollie')) {
                                                     echo 'active';
                                                 } ?>" id="7">
@@ -318,7 +328,7 @@ $segment_4 = $this->uri->segment('4');
                             </li>
                         <?php endif; ?>
 
-                        <?php if (in_array($this->session->userdata('role'), ['Superadmin', 'Admin'])) : ?>
+                        <?php if (in_array($this->session->userdata('role'), ['Superadmin'])) : ?>
                             <li class="treeview <?php if (($class_name == 'store')) {
                                                     echo 'active';
                                                 } ?>" id="7">
@@ -329,7 +339,7 @@ $segment_4 = $this->uri->segment('4');
                         <?php endif; ?>
 
 
-                        <?php if (in_array($this->session->userdata('role'), ['Superadmin', 'Admin'])) : ?>
+                        <?php if (in_array($this->session->userdata('role'), ['Superadmin'])) : ?>
                             <li class="treeview <?php if (($class_name == 'coupon')) {
                                                     echo 'active';
                                                 } ?>" id="7">
@@ -339,7 +349,7 @@ $segment_4 = $this->uri->segment('4');
                             </li>
                         <?php endif; ?>
 
-                        <?php if (in_array($this->session->userdata('role'), ['Superadmin', 'Admin'])) : ?>
+                        <?php if (in_array($this->session->userdata('role'), ['Superadmin'])) : ?>
                             <li class="treeview <?php if (($class_name == 'email')) {
                                                     echo 'active';
                                                 } ?>" id="7">
@@ -349,7 +359,7 @@ $segment_4 = $this->uri->segment('4');
                             </li>
                         <?php endif; ?>
 
-                        <?php if (in_array($this->session->userdata('role'), ['Superadmin', 'Admin'])) : ?>
+                        <?php if (in_array($this->session->userdata('role'), ['Superadmin'])) : ?>
                             <li class="treeview <?php if (($class_name == 'user')) {
                                                     echo 'active';
                                                 } ?>" id="7">
@@ -401,7 +411,7 @@ $segment_4 = $this->uri->segment('4');
                             </li>
                         <?php endif; ?>
 
-                        <?php if (in_array($this->session->userdata('role'), ['Superadmin', 'Admin'])) : ?>
+                        <?php if (in_array($this->session->userdata('role'), ['Superadmin'])) : ?>
                             <li class="treeview <?php if (($class_name == 'event')) {
                                                     echo 'active';
                                                 } ?>">
@@ -460,7 +470,7 @@ $segment_4 = $this->uri->segment('4');
                             </li>
                         <?php endif; ?>
 
-                        <?php if (in_array($this->session->userdata('role'), ['Superadmin', 'Admin', 'Meister'])) : ?>
+                        <?php if (in_array($this->session->userdata('role'), ['Superadmin', 'Admin'])) : ?>
                             <li class="treeview <?php if (($class_name == 'photo')) {
                                                     echo 'active';
                                                 } ?>">

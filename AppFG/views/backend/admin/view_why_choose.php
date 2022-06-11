@@ -50,7 +50,11 @@
 									<td><?php echo $i; ?></td>
 									<td><?php echo $row['name']; ?></td>
 									<td><i class="<?php echo $row['icon']; ?>" style="font-size:30px;"></i></td>
-									<td style="width:200px;"><img src="<?php echo base_url(); ?>public/uploads/<?php echo $row['photo']; ?>" alt="<?php echo $row['name']; ?>" style="width:200px;"></td>									
+									<td style="width:200px;">
+									<?php if (file_exists($row['photo'])) :?>
+										<img src="<?php echo base_url('public/uploads/why-choose/'.$row['photo']); ?>" style="width:200px;">
+									<?php endif;?>
+									</td>									
 									<td>
 										<a href="<?php echo base_url(); ?>backend/admin/why_choose/edit/<?php echo $row['id']; ?>" class="btn btn-primary btn-xs">Edit</a>
 										<a href="<?php echo base_url(); ?>backend/admin/why_choose/delete/<?php echo $row['id']; ?>" class="btn btn-danger btn-xs" onClick="return confirm('Are you sure?');">Delete</a> 

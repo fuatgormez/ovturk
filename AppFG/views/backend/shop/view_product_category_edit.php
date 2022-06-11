@@ -41,7 +41,7 @@ if (!$this->session->userdata('id')) {
                         <ul class="nav nav-tabs">
                             <?php $count = 0;
                             foreach ($all_store_value as $row) : ?>
-                                <li <?php echo $count == 0 ? 'class="active"' : '' ?>><a href="#<?php echo $row['store_value_id']; ?>" data-toggle="tab"><img src="<?php echo base_url('public/uploads/store_photos/flag/'); ?><?php echo $row['lang_flag']; ?>" width="50"></a></li>
+                                <li <?php echo $count == 0 ? 'class="active"' : '' ?>><a href="#<?php echo $row['store_value_id']; ?>" data-toggle="tab"><img src="<?php echo base_url('public/flags/'); ?><?php echo $row['lang_flag']; ?>" width="50"></a></li>
                             <?php $count = 1;
                             endforeach; ?>
                         </ul>

@@ -9,6 +9,33 @@ $(function () {
       base_url = 'https://www.fuatgormez.tech/irispicture/';
   }
 
+  $(document).on('click', '.favorite', function (e) {
+    e.preventDefault();
+    let selected = $(this);
+    var id = $(this).attr('data-id');
+    var fav = $(this).attr('data-fav');
+
+    $.ajax({
+      type: 'POST',
+      url: base_url + '/backend/admin/photo/favorite/' + id,
+      data: {fav},
+      dataType: 'json',
+
+      beforeSend: function () {
+        $('.loadermodern').removeClass("hidden");
+      },
+      success: function (res) {
+        
+        $('.loadermodern').addClass("hidden");
+        selected.attr('style', + fav == 1 ? 'color:black' : 'color:coral');
+        selected.attr('data-fav', + fav == 1 ? 0 : 1);
+        // $(this).attr('style','color: red');
+      },
+      complete: function (res) {},
+      error: function (xhr, status, res) {},
+    });
+  });
+
   $(document).on("click", ".export_order_data_detail", function (e) {
     e.preventDefault();
     var order_number = $(this).data('order-number');

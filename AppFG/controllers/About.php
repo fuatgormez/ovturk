@@ -8,6 +8,7 @@ class About extends CI_Controller {
         $this->load->model('Model_common');
         $this->load->model('Model_portfolio');
         $this->load->model('Model_service');
+        $this->load->model('shop/Model_shopping_cart');
 
         $this->load->library('cart');
 		$this->lang->load('file', $this->session->userdata('site_language') ?? $this->session->userdata('store_language'));
@@ -21,7 +22,7 @@ class About extends CI_Controller {
         $data['page_home'] = $this->Model_common->all_page_home();
 		$data['page_about'] = $this->Model_common->all_page_about();
 		$data['comment'] = $this->Model_common->all_comment();
-		$data['social'] = $this->Model_common->all_social();
+		$data['socials'] = $this->Model_common->all_social();
 		$data['all_news'] = $this->Model_common->all_news();
         $data['services'] = $this->Model_service->all_service();
         $data['page_contact'] = $this->Model_common->all_page_contact();
@@ -29,6 +30,14 @@ class About extends CI_Controller {
 
         $data['stores'] = $this->Model_common->get_all_store();
         $data['store_langs'] = $this->Model_common->get_all_store_value();
+
+        $land_id = empty($this->session->userdata('land_id')) ? redirect(base_url('select_land')) : $this->session->userdata('land_id') ;
+        $store_id = empty($this->session->userdata('store_id')) ? redirect(base_url('select_land')) : $this->session->userdata('store_id') ;
+        $store_lang_data = empty($this->session->userdata('store_language')) ? redirect(base_url('select_land')) : $this->session->userdata('store_language') ;
+        
+        $data['products'] = $this->Model_shopping_cart->all_product($store_lang_data, $land_id);
+        $data['product_categories'] = $this->Model_shopping_cart->all_product_category($store_lang_data);
+        $data['product_category_photo'] = $this->Model_shopping_cart->all_product_category_photo();
 
         $data['theme'] = $data['setting']['layout'];
 

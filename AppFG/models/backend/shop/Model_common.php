@@ -25,7 +25,7 @@ class Model_common extends CI_Model
     
     public function extension_check_photo($param) {
 	    //$ext!='svg' && $ext!='SVG' && $ext!='jpg' && $ext!='png' && $ext!='jpeg' && $ext!='gif' && $ext!='JPG' && $ext!='PNG' && $ext!='JPEG' && $ext!='GIF'
-        $ext = array('svg','SVG','jpg','png','jpeg','gif','JPG','PNG','JPEG','GIF');
+        $ext = array('webp','WEBP','svg','SVG','jpg','png','jpeg','gif','JPG','PNG','JPEG','GIF');
     	if( in_array($param,$ext)) {
     		return true;
     	} else {

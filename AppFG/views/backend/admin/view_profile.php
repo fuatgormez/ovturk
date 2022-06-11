@@ -72,7 +72,7 @@
 										<?php if ($this->session->userdata('photo') == '') : ?>
 											<img src="<?php echo base_url(); ?>public/backend/admin/img/no-photo.jpg" class="existing-photo" alt="profile photo" width="140">
 										<?php else : ?>
-											<img src="<?php echo base_url(); ?>public/uploads/<?php echo $this->session->userdata('photo'); ?>" class="existing-photo" width="140">
+											<img src="<?php echo base_url(); ?>public/uploads/user/<?php echo $this->session->userdata('photo'); ?>" class="existing-photo" width="140">
 										<?php endif; ?>
 									</div>
 								</div>

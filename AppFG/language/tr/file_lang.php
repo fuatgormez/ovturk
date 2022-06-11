@@ -8,7 +8,7 @@ $lang['store_not_found_search'] = 'Für deine Anfrage gab es keine Ergebnisse. B
 //Shop
 $lang['shop_product_availability'] = 'Weihnachtsaktion! Gutscheine verfügbar noch';
 $lang['land'] = 'Land';
-$lang['shop_header_nav_shopping_cart'] = 'Warenkorb';
+$lang['shop_header_nav_shopping_cart'] = 'Sepet';
 $lang['shop_header_nav_specify_address'] = 'Specify address';
 $lang['shop_header_nav_confirm'] = 'Bestätigen';
 $lang['shop_header_nav_payment_methods'] = 'Zahlungsmethoden';
@@ -78,24 +78,24 @@ $lang["payment_success_message_alert"] = "Die Bestellung wurde erfolgreich erste
 $lang["payment_canceled_message_alert"] = "Die Bestellung wurde abgebrochen, Du kannst dennoch Deine Bestellung abschliessen.";
 
 //Shop Email
-$lang['payment_email_message'] = "Irispicture Shop Email";
+$lang['payment_email_message'] = "Önce Vatan Shop Email";
 
 //Checkout Form
 $lang["payment_form_store_select_desc"] = "Bevorzugter Standort:";
 $lang["payment_form_title_billing"] = "Rechnungsadresse";
 $lang["payment_form_title_shipping"] = "Lieferadresse";
 $lang["payment_form_title_ship"] = "Andere Lieferadresse";
-$lang["payment_form_firstname"] = "Vorname";
-$lang["payment_form_lastname"] = "Nachname";
-$lang["payment_form_email"] = "E-Mail Adresse";
+$lang["payment_form_firstname"] = "Ad";
+$lang["payment_form_lastname"] = "Soyad";
+$lang["payment_form_email"] = "E-Mail Adres";
 $lang["payment_form_phone"] = "Telefon";
-$lang["payment_form_address"] = "Adresse";
-$lang["payment_form_street"] = "Straße";
+$lang["payment_form_address"] = "Adres";
+$lang["payment_form_street"] = "Sokak";
 $lang["payment_form_street_no"] = "Nr.";
-$lang["payment_form_land"] = "Land";
-$lang["payment_form_city"] = "Stadt";
-$lang["payment_form_postcode"] = "Postleitzahl";
-$lang["payment_form_comment"] = "Anmerkung";
+$lang["payment_form_land"] = "Ülke";
+$lang["payment_form_city"] = "Sehir";
+$lang["payment_form_postcode"] = "Posta Kodu";
+$lang["payment_form_comment"] = "Aciklama";
 
 $lang['payment_form_warning_title'] = "Wichtiger Hinweis: Wir versenden ausschließlich in die Länder, die in den Liefer- und Zahlungsbedingungen aufgeführt sind.";
 
@@ -151,15 +151,15 @@ $lang["home_welcome1_box4_title"] = '<h4 class="image-box-name mb-2">Schmuck</h4
 
 //contact page view
 $lang["contact_page_header_text"] = "Kontakt";
-$lang["contact_form_title_text"] = "Wie können wir Ihnen helfen?";
-$lang["contact_form_name"] = "Name";
+$lang["contact_form_title_text"] = "Size nasil yardimci olabiliriz?";
+$lang["contact_form_name"] = "Isim";
 $lang["contact_form_email"] = "Email";
 $lang["contact_form_phone"] = "Telefon";
-$lang["contact_form_subject"] = "Thema";
-$lang["contact_form_message"] = "Nachricht";
-$lang["contact_form_send_button"] = "Senden";
+$lang["contact_form_subject"] = "Konu";
+$lang["contact_form_message"] = "Mesaj";
+$lang["contact_form_send_button"] = "Gönder";
 
-$lang["contact_form_send_success"] = "Danke für deine Nachricht. Wir werden Dich in Kürze kontaktieren.";
+$lang["contact_form_send_success"] = "Mesajiniz icin tesekkür ederiz en kisa zamanda geri dönüs saglanacaktir.";
 
 
 //errors

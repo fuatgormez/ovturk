@@ -9,10 +9,8 @@
 </section>
 
 <section class="content">
-
     <div class="row">
         <div class="col-md-12">
-
             <?php if ($this->session->flashdata('error')) : ?>
                 <div class="callout callout-danger">
                     <p><?php echo $this->session->flashdata('error'); ?></p>
@@ -35,7 +33,7 @@
                         <ul class="nav nav-tabs">
                             <?php $count = 0;
                             foreach ($all_store_value as $row) : ?>
-                                <li <?php echo $count == 0 ? 'class="active"' : '' ?>><a href="#<?php echo $row['store_value_id']; ?>" data-toggle="tab"><img src="<?php echo base_url('public/uploads/store_photos/flag/'); ?><?php echo $row['lang_flag']; ?>" width="50"></a></li>
+                                <li <?php echo $count == 0 ? 'class="active"' : '' ?>><a href="#<?php echo $row['store_value_id']; ?>" data-toggle="tab"><img src="<?php echo base_url('public/flags/'); ?><?php echo $row['lang_flag']; ?>" width="50"></a></li>
                             <?php $count = 1;
                             endforeach; ?>
                         </ul>
@@ -330,107 +328,22 @@
                     <!-- SKU End -->
 
                     <!-- Product Attribute -->
-                    <h3 class="seo-info">Product attribute & Updatable for upgrade</h3>
+                    <h3 class="seo-info">Tags</h3>
                     <div class="form-group">
-                        <label for="" class="col-sm-2 control-label">Product Attribute</label>
+                        <label for="" class="col-sm-2 control-label">Add tag</label>
                         <div class="col-sm-10">
-                            <select name="product_attribute" class="form-control select2">
-                                <option value="einzel" <?php echo $product['product_attribute'] === 'einzel' ? 'selected' : ''; ?>>Einzel</option>
-                                <option value="paar_versetz" <?php echo $product['product_attribute'] === 'paar_versetz' ? 'selected' : ''; ?>>Paar Versetz</option>
-                                <option value="paar_explosion" <?php echo $product['product_attribute'] === 'paar_explosion' ? 'selected' : ''; ?>>Paar Explosion</option>
-                                <option value="paar_fusion" <?php echo $product['product_attribute'] === 'paar_fusion' ? 'selected' : ''; ?>>Paar Fusion</option>
-                                <option value="familie" <?php echo $product['product_attribute'] === 'familie' ? 'selected' : ''; ?>>Familie</option>
-                                <option value="familie_explosion" <?php echo $product['product_attribute'] === 'familie_explosion' ? 'selected' : ''; ?>>Familie Explosion</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="" class="col-sm-2 control-label">Choose an updatable product!</label>
-                        <div class="col-sm-10">
-                            <select name="product_updatable_add[]" class="form-control select2" multiple="multiple">
-                                <?php foreach ($all_products as $rowAllProductKey => $product_attr) : ?>
-                                    <?php if ($product_attr['product_price'] > $product['product_price']) : ?>
-                                        <?php foreach ($all_product_category as $product_attr_cat) : ?>
-                                            <?php if ($product_attr['category_id'] == $product_attr_cat['category_id'] && $product_attr_cat['land_id'] == $this->session->userdata('land_id')) : ?>
-                                                <?php if (!in_array($product_attr['id'], $product_allow_all[$rowAllProductKey]['allow_product'])) : ?>
-                                                    <option value="<?php echo $product_attr['product_id']; ?>"> <?php echo $product_attr['product_id']; ?> - <?php echo $product_attr_cat['category_name'] . " - " . $product_attr['product_name']; ?> </option>
-                                                <?php endif; ?>
-                                            <?php endif; ?>
-                                        <?php endforeach; ?>
+                            <select name="tag[]" class="form-control select2" multiple="multiple">
+                                <?php foreach ($tags as $tagKey => $tag) : ?>
+                                    <?php if(in_array($tag['tag_id'], json_decode($product['tag']))): ?>
+                                        <option value="<?php echo $tag['tag_id']; ?>" selected><?php echo $tag['name']; ?></option>
+                                    <?php else: ?>
+                                        <option value="<?php echo $tag['tag_id']; ?>"><?php echo $tag['name']; ?></option>
                                     <?php endif; ?>
                                 <?php endforeach; ?>
                             </select>
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="" class="col-sm-2 control-label">Choose an extra product!</label>
-                        <div class="col-sm-10">
-                            <select name="product_extra_add[]" class="form-control select2" multiple="multiple">
-                                <?php foreach ($all_products as $rowAllProductExtraKey => $product_attr) : ?>
-                                    <?php foreach ($all_product_category as $product_attr_cat) : ?>
-                                        <?php if ($product_attr['category_id'] == $product_attr_cat['category_id'] && $product_attr_cat['land_id'] == $this->session->userdata('land_id')) : ?>
-                                            <?php if (!in_array($product_attr['id'], $product_allow_all[$rowAllProductExtraKey]['allow_product'])) : ?>
-                                                <option value="<?php echo $product_attr['product_id']; ?>"> <?php echo $product_attr['product_id']; ?> - <?php echo $product_attr_cat['category_name'] . " - " . $product_attr['product_name']; ?> </option>
-                                            <?php endif; ?>
-                                        <?php endif; ?>
-                                    <?php endforeach; ?>
-
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                    </div>
-
-
-                    <h3 class="seo-info">Updatable<label class="pull-right"><input type="checkbox" class="select_all_data"> SELECT ALL</label></h3>
-                    <div class="form-group">
-
-                        <?php foreach ($all_products as $productKey => $product_attr) : ?>
-                            <?php foreach ($product_allows as $allowKey => $allow) : ?>
-                                <?php if ($product_attr['product_id'] == $allow['allow_product']) : ?>
-                                    <?php $allow_id = $allow['allow_product'];
-                                    $unique_row_id = hexdec(uniqid()); ?>
-                                    <?php $checked = 'checked'; ?>
-                                    <div class="col-sm-12 <?php echo $unique_row_id; ?>">
-                                        <div class="checkbox">
-                                            <label class="col-sm-4">
-                                                <input type="checkbox" name="allow_product[]" value="<?php echo $product_attr['product_id']; ?>" class="<?php echo $product_attr['product_id']; ?> toogle_select_data" <?php echo $checked; ?>>
-                                                <?php echo $product_attr['category_name'] . " " . $product_attr['product_name']; ?>
-                                            </label>
-                                            <label class="col-sm-1 control-label">
-                                                <input type="checkbox" name="product_updatable[<?php echo $product_attr['product_id']; ?>]" class="updatable toogle_select_data" <?php echo $allow['updatable'] ? 'checked' : ''; ?>> Update
-                                            </label>
-                                            <label class="col-sm-1 control-label">
-                                                <input type="checkbox" name="product_extra[<?php echo $product_attr['product_id']; ?>]" class="extras toogle_select_data" <?php echo $allow['extra'] ? 'checked' : ''; ?>> Extras
-                                            </label>
-                                            <label class="col-sm-1 control-label">
-                                                <input type="checkbox" class="all_store toogle_select_data" data-all="<?php echo $product_attr['product_id']; ?>"> All Store
-                                            </label>
-                                            <label class="col-sm-4 control-label">
-                                                <select name="product_allow_store[<?php echo $product_attr['product_id']; ?>][]" class="form-control select2 <?php echo $product_attr['product_id']; ?> toogle_select_data" multiple="multiple" id="<?php echo $product_attr['product_id']; ?>">
-                                                    <?php $explode_store = json_decode($allow['allow_store']); ?>
-                                                    <?php foreach ($all_store_value as $storeKey => $store) : ?>
-                                                        <?php if (in_array($store['store_value_id'], $explode_store)) : ?>
-                                                            <option value="<?php echo $store['store_value_id']; ?>" selected> <?php echo $store['land_name']; ?></option>
-                                                        <?php else : ?>
-                                                            <option value="<?php echo $store['store_value_id']; ?>"> <?php echo $store['land_name']; ?></option>
-                                                        <?php endif; ?>
-                                                    <?php endforeach; ?>
-                                                </select>
-                                            </label>
-                                            <label class="col-sm-1 control-label">
-                                                <i class="fa fa-trash text-danger delete_allow_product" data-row-id="<?php echo $unique_row_id; ?>" data-product-id="<?php echo $product['id']; ?>" data-product-allow="<?php echo $allow['allow_product']; ?>"></i>
-                                            </label>
-
-                                        </div>
-                                        <div style="margin:25px;border-bottom:1px solid#eee"></div>
-                                    </div>
-                                <?php endif; ?>
-                            <?php endforeach; ?>
-                        <?php endforeach; ?>
-                    </div>
-                    <!-- Product Attribute End -->
 
                     <!-- Block The Sale -->
                     <h3 class="seo-info">URUNUN SATISINI ENGELLEMEK ISTIYORSANIZ BU KISMI KULLANIN URUNUN STATUS'UNU HIDE YAPMAYIN KIOSK TA O URUN CALISMAZ (MUSTERI FOTOGRAF CEKEMEZ)!!!</h3>
@@ -458,7 +371,6 @@
             <?php echo form_close(); ?>
         </div>
     </div>
-
 </section>
 
 <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

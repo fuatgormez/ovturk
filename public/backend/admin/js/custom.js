@@ -15,6 +15,65 @@ $(function () {
   //   });
   // });
 
+  $(document).on("click", ".single-photo-update", function (e) {
+    e.preventDefault();
+
+    var photo_id = $('.photo_title').data('id');
+    var photo_title = $('.photo_title').val();
+
+
+      $.ajax({
+        type: "POST",
+        url: base_url + "backend/admin/portfolio/single_photo_update",
+        data: { photo_id, photo_title},
+        dataType: "json",
+
+        beforeSend: function () {
+          $(".loadermodern").removeClass("hidden");
+        },
+        success: function (response) {
+          
+        },
+        complete: function () {
+          $('#title'+photo_id).html(photo_title);
+          // $('#photo_title').val(photo_title);
+          $(".loadermodern").addClass("hidden");
+          $('#confirm-single-foto-edit').modal('hide');
+        },
+        error: function () {
+          
+        },
+      });
+  });
+  
+  $(document).on("click", ".single-photo-edit", function (e) {
+    e.preventDefault();
+
+    let photo_id = $(this).data("id");
+
+    $('.photo_title').attr('data-id', photo_id);
+    $('#confirm-single-foto-edit').modal('show');
+
+
+      $.ajax({
+        type: "POST",
+        url: base_url + "backend/admin/portfolio/single_photo_edit",
+        data: { photo_id},
+        dataType: "json",
+
+        beforeSend: function () {
+          $(".loadermodern").removeClass("hidden");
+        },
+        success: function (response) {
+          $('.photo_title').val(response.title);
+        },
+        complete: function () {
+          $(".loadermodern").addClass("hidden");
+        },
+        error: function () {},
+      });
+  });
+  
   $(document).on("change", ".is_printed", function (e) {
     e.preventDefault();
 

@@ -19,22 +19,16 @@ if (!$this->session->userdata('id')) {
     <div class="row">
         <div class="col-md-12">
 
-            <?php
-            if ($this->session->flashdata('error')) {
-            ?>
+            <?php if ($this->session->flashdata('error')) : ?>
                 <div class="callout callout-danger">
                     <p><?php echo $this->session->flashdata('error'); ?></p>
                 </div>
-            <?php
-            }
-            if ($this->session->flashdata('success')) {
-            ?>
+            <?php endif; ?>
+            <?php if ($this->session->flashdata('success')) : ?>
                 <div class="callout callout-success">
                     <p><?php echo $this->session->flashdata('success'); ?></p>
                 </div>
-            <?php
-            }
-            ?>
+            <?php endif; ?>
 
             <?php echo form_open_multipart(base_url() . 'backend/shop/product_category/add', array('class' => 'form-horizontal')); ?>
             <div class="box box-info">
@@ -46,7 +40,7 @@ if (!$this->session->userdata('id')) {
                         <ul class="nav nav-tabs">
                             <?php $count = 0;
                             foreach ($all_store_value as $row) : ?>
-                                <li <?php echo $count == 0 ? 'class="active"' : '' ?>><a href="#<?php echo $row['store_value_id']; ?>" data-toggle="tab"><img src="<?php echo base_url('public/uploads/store_photos/flag/'); ?><?php echo $row['lang_flag']; ?>" width="50"></a></li>
+                                <li <?php echo $count == 0 ? 'class="active"' : '' ?>><a href="#<?php echo $row['store_value_id']; ?>" data-toggle="tab"><img src="<?php echo base_url('public/flags/'); ?><?php echo $row['lang_flag']; ?>" width="50"></a></li>
                             <?php $count = 1;
                             endforeach; ?>
                         </ul>

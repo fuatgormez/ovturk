@@ -56,7 +56,7 @@
                                 <div class="form-group">
                                     <label for="" class="col-sm-2 control-label">Existing Photo</label>
                                     <div class="col-sm-6" style="padding-top:6px;">
-                                        <img src="<?php echo base_url(); ?>public/uploads/<?php echo $setting['logo']; ?>" class="existing-photo" style="height:80px;">
+                                        <img src="<?php echo base_url(); ?>public/uploads/<?php echo $setting['logo'].'?r='.time(); ?>" class="existing-photo" style="height:80px;">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -165,7 +165,7 @@
                     <!-- Head End -->
                     <!-- Footer Start -->
                     <div class="tab-pane" id="tab_footer">
-                        <?php echo form_open(base_url() . 'backend/admin/setting/update', array('class' => 'form-horizontal')); ?>
+                        <?php echo form_open(base_url() . 'backend/admin/setting/update', array('class' => 'form-horizontal', 'name' => 'form_footer_general')); ?>
                         <h3 class="sec_title" style="margin-top:0px;">General Section</h3>
                         <div class="form-group">
                             <label for="" class="col-sm-3 control-label">Column 1 Title </label>
@@ -230,14 +230,14 @@
                         <div class="form-group">
                             <label for="" class="col-sm-3 control-label"></label>
                             <div class="col-sm-6">
-                                <button type="submit" class="btn btn-success pull-left" name="form_footer_general">Update</button>
+                                <button type="submit" class="btn btn-success pull-left ajax_request">Update</button>
                             </div>
                         </div>
                         <?php echo form_close(); ?>
 
 
 
-                        <?php echo form_open_multipart(base_url() . 'backend/admin/setting/update', array('class' => 'form-horizontal')); ?>
+                        <?php echo form_open_multipart(base_url() . 'backend/admin/setting/update', array('class' => 'form-horizontal', 'name' => 'form_footer_newsletter')); ?>
                         <h3 class="sec_title">Newsletter Section</h3>
                         <div class="form-group">
                             <label for="" class="col-sm-3 control-label">Newsletter Text </label>
@@ -248,14 +248,14 @@
                         <div class="form-group">
                             <label for="" class="col-sm-3 control-label"></label>
                             <div class="col-sm-6">
-                                <button type="submit" class="btn btn-success pull-left" name="form_footer_newsletter">Update</button>
+                                <button type="submit" class="btn btn-success pull-left ajax_request">Update</button>
                             </div>
                         </div>
                         <?php echo form_close(); ?>
 
 
 
-                        <?php echo form_open_multipart(base_url() . 'backend/admin/setting/update', array('class' => 'form-horizontal')); ?>
+                        <?php echo form_open_multipart(base_url() . 'backend/admin/setting/update', array('class' => 'form-horizontal', 'name' => 'form_footer_cta')); ?>
                         <h3 class="sec_title">Call To Action Section</h3>
                         <div class="form-group">
                             <label for="" class="col-sm-3 control-label">CTA Text </label>
@@ -278,7 +278,7 @@
                         <div class="form-group">
                             <label for="" class="col-sm-3 control-label"></label>
                             <div class="col-sm-6">
-                                <button type="submit" class="btn btn-success pull-left" name="form_footer_cta">Update</button>
+                                <button type="submit" class="btn btn-success pull-left ajax_request">Update</button>
                             </div>
                         </div>
                         <?php echo form_close(); ?>
@@ -332,7 +332,7 @@
                         <?php echo form_close(); ?>
 
 
-                        <?php echo form_open_multipart(base_url() . 'backend/admin/setting/update', array('class' => 'form-horizontal')); ?>
+                        <?php echo form_open_multipart(base_url() . 'backend/admin/setting/update', array('class' => 'form-horizontal', 'name' => 'form_footer_zoho_live_chat')); ?>
                         <h3 class="sec_title" style="margin-top:0px;">Footer Zoho Live Chat</h3>
                         <div class="form-group">
                             <label for="" class="col-sm-3 control-label">Live Zoho Chat Display</label>
@@ -352,7 +352,7 @@
                         <div class="form-group">
                             <label for="" class="col-sm-3 control-label"></label>
                             <div class="col-sm-6">
-                                <button type="submit" class="btn btn-success pull-left" name="form_footer_zoho_live_chat">Update</button>
+                                <button type="submit" class="btn btn-success pull-left ajax_request">Update</button>
                             </div>
                         </div>
                         <?php echo form_close(); ?>
@@ -595,7 +595,6 @@
                                         </td>
                                         <?php echo form_close(); ?>
                                     </tr>
-
                                     <tr>
                                         <?php echo form_open_multipart(base_url() . 'backend/admin/setting/update', array('class' => '')); ?>
                                         <td style="width:50%">
@@ -608,6 +607,21 @@
                                             <h4>Change Banner</h4>
                                             Select Photo 1350x299px<input type="file" name="photo">
                                             <input type="submit" class="btn btn-primary btn-xs" value="Change" style="margin-top:10px;" name="form_banner_portfolio">
+                                        </td>
+                                        <?php echo form_close(); ?>
+                                    </tr>
+                                    <tr>
+                                        <?php echo form_open_multipart(base_url() . 'backend/admin/setting/update', array('class' => '')); ?>
+                                        <td style="width:50%">
+                                            <h4>Blog Page</h4>
+                                            <p>
+                                                <img src="<?php echo base_url('public/uploads/') . $setting['banner_blog']; ?>" alt="" style="width: 100%;height:auto;">
+                                            </p>
+                                        </td>
+                                        <td style="width:50%">
+                                            <h4>Change Banner</h4>
+                                            Select Photo 1350x299px<input type="file" name="photo">
+                                            <input type="submit" class="btn btn-primary btn-xs" value="Change" style="margin-top:10px;" name="form_banner_blog">
                                         </td>
                                         <?php echo form_close(); ?>
                                     </tr>

@@ -12,23 +12,16 @@
 
 	<div class="row">
 		<div class="col-md-12">
-
-			<?php
-	        if($this->session->flashdata('error')) {
-	            ?>
+			<?php if($this->session->flashdata('error')) : ?>
 	            <div class="callout callout-danger">
 	                <p><?php echo $this->session->flashdata('error'); ?></p>
 	            </div>
-	            <?php
-	        }
-	        if($this->session->flashdata('success')) {
-	            ?>
+	        <?php endif; ?>
+	        <?php if($this->session->flashdata('success')) : ?>
 	            <div class="callout callout-success">
 	                <p><?php echo $this->session->flashdata('success'); ?></p>
 	            </div>
-	            <?php
-	        }
-	        ?>
+	        <?php endif; ?>
 
 			<?php echo form_open_multipart(base_url().'backend/admin/portfolio/add',array('class' => 'form-horizontal')); ?>
 				<div class="box box-info">
@@ -99,13 +92,9 @@
 							<label for="" class="col-sm-2 control-label">Select Category *</label>
 							<div class="col-sm-4">
 								<select name="category_id" class="form-control select2">
-									<?php
-									foreach ($all_photo_category as $row) {
-										?>
+									<?php foreach ($all_photo_category as $row) : ?>
 										<option value="<?php echo $row['category_id']; ?>"><?php echo $row['category_name']; ?></option>
-										<?php
-									}
-									?>
+									<?php endforeach;?>
 								</select>
 							</div>
 						</div>
@@ -156,13 +145,24 @@
 								<textarea class="form-control" name="meta_description" style="height:100px;"><?php if(isset($_POST['meta_description'])){echo $_POST['meta_description'];} ?></textarea>
 							</div>
 						</div>
+						<!-- Tag -->
+						<h3 class="seo-info">Tags</h3>
+						<div class="form-group">
+							<label for="" class="col-sm-2 control-label">Add tag</label>
+							<div class="col-sm-10">
+								<select name="tag[]" class="form-control select2" multiple="multiple">
+									<?php foreach ($tags as $tagKey => $tag) : ?>
+										<option value="<?php echo $tag['tag_id']; ?>"><?php echo $tag['name']; ?></option>
+									<?php endforeach; ?>
+								</select>
+							</div>
+						</div>
 						<div class="form-group">
 							<label for="" class="col-sm-2 control-label"></label>
 							<div class="col-sm-6">
 								<button type="submit" class="btn btn-success pull-left" name="form1">Submit</button>
 							</div>
 						</div>
-
 					</div>
 				</div>
 			<?php echo form_close(); ?>

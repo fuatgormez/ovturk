@@ -219,4 +219,16 @@ class Model_page extends CI_Model
         $this->db->where('id',1);
         $this->db->update('tbl_page_portfolio',$data);
     }
+    
+    public function show_blog()
+    {
+        $query = $this->db->query("SELECT * from tbl_page_blog WHERE id=1");
+        return $query->first_row('array');
+    }
+
+    public function update_blog($data)
+    {
+        $this->db->where('id',1);
+        $this->db->update('tbl_page_blog',$data);
+    }
 }
